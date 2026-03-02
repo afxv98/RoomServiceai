@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mic, Mail, Lock } from 'lucide-react';
@@ -14,6 +14,18 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('hotel');
+  const [portalLabel, setPortalLabel] = useState('Hotel Manager Portal');
+
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    if (hostname.startsWith('admin.')) {
+      setUserType('admin');
+      setPortalLabel('Super Admin Portal');
+    } else {
+      setUserType('hotel');
+      setPortalLabel('Hotel Manager Portal');
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,48 +86,11 @@ export default function LoginPage() {
               RoomService<span className="text-copper">AI</span>
             </span>
           </Link>
-          <p className="text-gray-400 text-sm">Sign in to your account</p>
+          <p className="text-gray-400 text-sm">{portalLabel}</p>
         </div>
 
         {/* Login Form */}
         <div className="bg-white rounded-sm shadow-2xl p-8">
-          {/* User Type Selection */}
-          <div className="flex gap-2 mb-6">
-            <button
-              type="button"
-              onClick={() => setUserType('hotel')}
-              className={`flex-1 py-2 px-4 rounded-sm font-medium text-sm transition-colors ${
-                userType === 'hotel'
-                  ? 'bg-copper text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              Hotel Manager
-            </button>
-            <button
-              type="button"
-              onClick={() => setUserType('admin')}
-              className={`flex-1 py-2 px-4 rounded-sm font-medium text-sm transition-colors ${
-                userType === 'admin'
-                  ? 'bg-copper text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              Super Admin
-            </button>
-            <button
-              type="button"
-              onClick={() => setUserType('sales')}
-              className={`flex-1 py-2 px-4 rounded-sm font-medium text-sm transition-colors ${
-                userType === 'sales'
-                  ? 'bg-copper text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              Sales Rep
-            </button>
-          </div>
-
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
