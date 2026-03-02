@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { TrendingUp, LogOut, Loader2 } from 'lucide-react';
+import { TrendingUp, LogOut, Loader2, CalendarDays } from 'lucide-react';
 
 export default function SalesLayout({ children }) {
   const router = useRouter();
@@ -51,7 +52,23 @@ export default function SalesLayout({ children }) {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          {rep && <p className="text-sm text-gray-300">Hi, <span className="text-white font-medium">{rep.name}</span></p>}
+          <Link
+            href="/sales/calendar"
+            className={`flex items-center gap-1.5 text-sm transition-colors ${
+              pathname?.startsWith('/sales/calendar') ? 'text-white' : 'text-gray-300 hover:text-white'
+            }`}
+          >
+            <CalendarDays className="w-4 h-4" /> Calendar
+          </Link>
+          <Link
+            href="/sales"
+            className={`flex items-center gap-1.5 text-sm transition-colors ${
+              pathname === '/sales' ? 'text-white' : 'text-gray-300 hover:text-white'
+            }`}
+          >
+            My Leads
+          </Link>
+          {rep && <p className="text-sm text-gray-300 border-l border-gray-600 pl-4">Hi, <span className="text-white font-medium">{rep.name}</span></p>}
           <button onClick={handleLogout} className="flex items-center gap-1.5 text-sm text-gray-300 hover:text-white transition-colors">
             <LogOut className="w-4 h-4" /> Sign Out
           </button>
