@@ -89,7 +89,7 @@ export default function UsersPage() {
   };
 
   const handleDelete = async (user) => {
-    const ok = await confirm(`Delete account for ${user.email}? This cannot be undone.`);
+    const ok = await confirm({ message: `Delete account for ${user.email}? This cannot be undone.` });
     if (!ok) return;
     try {
       const res = await fetch(`/api/admin/hotel-users/${user.id}`, { method: 'DELETE' });
