@@ -39,8 +39,9 @@ export function middleware(request) {
   // admin.roomserviceai.com/users     →  /admin/users
   // admin.roomserviceai.com/login     →  /login  (shared login page, no rewrite)
   // admin.roomserviceai.com/admin/X   →  /admin/X (already prefixed, no change)
+  // admin.roomserviceai.com/api/X     →  /api/X  (API routes, no rewrite)
   if (subdomain === 'admin') {
-    if (pathname.startsWith('/admin') || pathname === '/login') {
+    if (pathname.startsWith('/admin') || pathname === '/login' || pathname.startsWith('/api/')) {
       return NextResponse.next();
     }
     url.pathname = pathname === '/' ? '/admin' : `/admin${pathname}`;
@@ -51,8 +52,9 @@ export function middleware(request) {
   // sales.roomserviceai.com/          →  /sales
   // sales.roomserviceai.com/login     →  /sales/login
   // sales.roomserviceai.com/sales/X   →  /sales/X  (already prefixed, no change)
+  // sales.roomserviceai.com/api/X     →  /api/X  (API routes, no rewrite)
   if (subdomain === 'sales') {
-    if (pathname.startsWith('/sales')) {
+    if (pathname.startsWith('/sales') || pathname.startsWith('/api/')) {
       return NextResponse.next();
     }
     url.pathname = pathname === '/' ? '/sales' : `/sales${pathname}`;
