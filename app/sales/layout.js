@@ -11,7 +11,7 @@ export default function SalesLayout({ children }) {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    if (pathname === '/sales/login') { setChecking(false); return; }
+    if (pathname === '/sales/login' || pathname === '/login') { setChecking(false); return; }
     fetch('/api/sales/my-leads')
       .then(r => {
         if (r.status === 401) { router.replace('/sales/login'); return null; }
@@ -27,7 +27,7 @@ export default function SalesLayout({ children }) {
     router.replace('/sales/login');
   };
 
-  if (pathname === '/sales/login') return <>{children}</>;
+  if (pathname === '/sales/login' || pathname === '/login') return <>{children}</>;
 
   if (checking) {
     return (
