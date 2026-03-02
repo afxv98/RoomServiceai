@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Sora:wght@400;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4.7%;
+    --foreground: 40 20% 95%;
+    --card: 0 0% 6%;
+    --card-foreground: 40 20% 95%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 40 20% 95%;
+    --primary: 33 50% 54%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 40 20% 95%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 40 5% 68%;
+    --accent: 33 50% 54%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 30% 42%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 33 50% 54%;
+    --radius: 0.625rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+  
+  body {
+    @apply bg-charcoal text-offwhite font-inter antialiased;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sora;
+  }
+}
+
+@layer components {
+  .text-gradient-copper {
+    @apply bg-gradient-to-r from-copper to-copper-light bg-clip-text text-transparent;
+  }
+  
+  .btn-primary {
+    @apply bg-copper text-white px-8 py-4 rounded-lg font-semibold 
+           transition-all duration-300 hover:shadow-copper hover:scale-[1.02];
+  }
+  
+  .btn-outline {
+    @apply border-2 border-copper text-copper hover:bg-copper hover:text-white 
+           px-8 py-4 rounded-lg font-semibold transition-all duration-300;
+  }
+  
+  .micro-label {
+    @apply font-mono text-xs uppercase tracking-[0.12em] text-offwhite-muted;
+  }
+  
+  .section-pinned {
+    @apply relative w-screen h-screen overflow-hidden;
+  }
+  
+  .grain-overlay {
+    @apply fixed inset-0 pointer-events-none z-[1000] opacity-[0.06];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+}
+
+/* Smooth scrolling for GSAP */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0B0D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C78D4E;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4A574;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(199, 141, 78, 0.3);
+  color: #F4F1EC;
+}

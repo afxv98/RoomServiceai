@@ -1,0 +1,4 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "prisma migrate resolve --applied 20260226000000_initial || true && prisma migrate resolve --applied 20260227000000_add_hotel_users || true && prisma migrate deploy && prisma generate && next build"
+}

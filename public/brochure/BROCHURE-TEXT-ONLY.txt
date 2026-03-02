@@ -1,0 +1,329 @@
+ROOMSERVICE AI - BROCHURE TEXT
+================================
+Copy-paste ready content for your PDF design tool
+
+================================
+PAGE 1: COVER
+================================
+
+[Badge]
+Luxury Hospitality Meets AI
+
+[Main Headline]
+Transform Room Service Into
+Your Most Profitable Channel
+
+[Subheadline]
+AI-powered voice and chat ordering that delivers
+60-75% profit margins while reducing labor costs by 94-98%
+
+[Footer]
+Powered by AI • Built for Luxury • Designed for Profit
+www.roomserviceai.com
+
+
+================================
+PAGE 2: THE CHALLENGE
+================================
+
+[Badge]
+The Challenge
+
+[Headline]
+Traditional Room Service Is Broken
+
+[Stats - 3 columns]
+
+£3-5
+Labor cost per order
+Traditional staffing expenses
+
+40%+
+Revenue lost to inefficiency
+Missed orders and errors
+
+24/7
+Guest expectations
+Service without limits
+
+[Body]
+Hotels are losing revenue while guests expect premium service around the clock. Traditional staffing can't keep up without massive costs.
+
+
+================================
+PAGE 3: THE SOLUTION
+================================
+
+[Badge]
+Our Solution
+
+[Headline]
+AI-Powered Room Service
+That Actually Makes Money
+
+[Subheadline]
+Transform your room service into a high-margin revenue channel with intelligent automation
+
+[Feature 1: Revenue Growth]
+60-75% Profit Margins
+
+• Convert room service from cost center to profit channel
+• AI-powered intelligent upselling
+• Higher average order values
+• 24/7 revenue generation
+
+[Feature 2: Operational Excellence]
+94-98% Labor Cost Reduction
+
+• Zero missed orders
+• Instant POS integration
+• Real-time order tracking
+• Perfect accuracy every time
+
+[Feature 3: Luxury Experience]
+Premium Service at Scale
+
+• Natural voice ordering
+• Multi-channel access (voice, chat, QR)
+• Personalized recommendations
+• Zero wait times
+
+
+================================
+PAGE 4: PROVEN RESULTS
+================================
+
+[Badge]
+Proven Results
+
+[Headline]
+Real Numbers from Live Deployments
+
+[Metrics Grid]
+
+£0.11
+Cost per order
+vs £3-5 traditional labor
+
+98%
+Order accuracy
+Zero human error
+
+24/7
+Availability
+Never miss a sale
+
+2-3 Months
+ROI Timeline
+Most hotels see positive ROI within 2-3 months
+
+2-3 Weeks
+Deployment Time
+Go live in as little as 2-3 weeks
+
+[Image Caption]
+Premium Hospitality AI - Clean. Efficient. Modern.
+
+
+================================
+PAGE 5: TECHNOLOGY & SECURITY
+================================
+
+[Badge]
+Enterprise Technology
+
+[Headline]
+Built for Luxury Hotels
+
+[Left Column: Security & Compliance]
+• SOC2 Type II certified
+• GDPR compliant data handling
+• End-to-end encryption
+• Isolated AI processing
+• Regular security audits
+• PCI DSS compliant payments
+
+[Right Column: Seamless Integration]
+• Works with 100+ POS systems
+• PMS integration via Hapi Cloud
+• Existing menu sync
+• Multi-language support (20+ languages)
+• Custom branding options
+• Real-time analytics dashboard
+
+[Image Caption]
+Room Service 24/7 - Always Available. Always Premium.
+
+
+================================
+PAGE 6: HOW IT WORKS
+================================
+
+[Headline]
+Guest to Kitchen in 3 Simple Steps
+
+[Step 1: Guest Orders]
+Multiple Channels
+• Voice call (phone in room)
+• WhatsApp chat
+• QR code menu
+• Hotel app
+
+Natural conversation with AI agent
+
+[Step 2: AI Processes]
+Intelligent System
+• Understands requests in natural language
+• Suggests upgrades and pairings
+• Confirms order details
+• Processes payment (optional)
+
+Smart upselling & perfect accuracy
+
+[Step 3: Kitchen Receives]
+Instant Delivery
+• Order sent directly to POS
+• Kitchen gets formatted ticket
+• Staff prepares and delivers
+• Guest gets confirmation
+
+Seamless integration with existing workflow
+
+[Benefits]
+✓ No training required for guests
+✓ Works with existing kitchen operations
+✓ Zero workflow disruption
+✓ Instant deployment
+
+
+================================
+PAGE 7: PRICING
+================================
+
+[Headline]
+Flexible Pricing for Every Property
+
+[Tier 1: STARTER]
+£299/month
+Perfect for boutique hotels
+
+• Up to 50 rooms
+• Voice + Chat ordering
+• Basic POS integration
+• Email support
+• Standard analytics
+
+[Tier 2: PROFESSIONAL]
+£599/month
+Most popular for mid-size properties
+
+• Up to 150 rooms
+• Voice + Chat + QR ordering
+• Advanced POS integration
+• Priority support
+• Advanced analytics
+• Custom branding
+
+[Tier 3: ENTERPRISE]
+Custom Pricing
+For large hotels and chains
+
+• Unlimited rooms
+• All channels + API access
+• Custom integrations
+• Dedicated account manager
+• White-label options
+• Multi-property dashboard
+
+[ROI Example]
+100-room hotel example:
+• Cost savings: £3,150/month
+• Revenue increase: £2,500/month
+• Total benefit: £5,650/month
+• Investment: £599/month
+• NET GAIN: £5,051/month
+
+
+================================
+PAGE 8: CALL TO ACTION
+================================
+
+[Headline]
+Ready to Transform
+Your Room Service?
+
+[Subheadline]
+Join leading luxury hotels generating 60-75% profit margins with AI-powered ordering
+
+[CTA Buttons]
+Schedule Pilot Demo
+Download Full Tech Specs
+
+[Contact]
+📧 contact@roomserviceai.com
+🌐 www.roomserviceai.com
+📞 +44 20 XXXX XXXX
+
+[Pilot Banner]
+🎯 PILOT PROGRAM NOW OPEN
+Limited spots available for Q2 2026
+First 10 hotels receive 50% off for 6 months
+
+[Footer]
+RoomService AI © 2026
+Powered by AI • Built for Luxury • Designed for Profit
+
+
+================================
+BACK COVER (Optional)
+================================
+
+[About]
+RoomService AI is transforming hospitality with intelligent automation that combines the warmth of luxury service with the efficiency of artificial intelligence.
+
+Founded in 2024, we've partnered with leading hotels across the UK to revolutionize room service operations and create new revenue streams.
+
+[Credentials]
+• SOC2 Type II Certified
+• GDPR Compliant
+• PCI DSS Level 1
+• ISO 27001 Certified
+• Member: UK Hospitality Technology Alliance
+
+[Contact & Support]
+Headquarters: London, United Kingdom
+
+Sales: sales@roomserviceai.com
+Support: support@roomserviceai.com
+Partnerships: partners@roomserviceai.com
+
+Hours: Monday-Friday: 9AM-6PM GMT
+24/7 Technical Support for clients
+
+[QR Code]
+Scan to schedule your demo
+→ www.roomserviceai.com/demo
+
+
+================================
+QUICK DESIGN TIPS
+================================
+
+Colors:
+- Copper: #C87533
+- Charcoal: #1A1A1A
+- White: #FFFFFF
+
+Fonts:
+- Headlines: Outfit Bold
+- Body: Inter Regular
+
+Images to use:
+1. hero-luxury-room.jpg (Cover)
+2. hotel-staff-management.jpg (Page 3)
+3. kitchen-operations.jpg (Page 4)
+4. room-service-cart.jpg (Page 5)
+
+Page size: A4 (210mm × 297mm)
+Margins: 20mm all sides
+Resolution: 300 DPI minimum

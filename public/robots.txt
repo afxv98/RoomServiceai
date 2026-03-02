@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /TEST
+
+Sitemap: https://roomserviceai.com/sitemap.xml

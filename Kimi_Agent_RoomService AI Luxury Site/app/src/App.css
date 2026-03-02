@@ -1,0 +1,110 @@
+/* App-specific styles */
+
+/* Ensure smooth transitions between pinned sections */
+.section-pinned {
+  will-change: transform, opacity;
+}
+
+/* Image treatment - warm cinematic grade */
+.cinematic-img {
+  filter: contrast(1.05) saturate(0.92);
+}
+
+/* Wipe panel for transitions */
+.wipe-panel {
+  position: absolute;
+  inset: 0;
+  background: rgba(199, 141, 78, 0.1);
+  pointer-events: none;
+}
+
+/* Hairline rules */
+.hairline {
+  height: 1px;
+  background: rgba(244, 241, 236, 0.18);
+}
+
+/* Card hover effects */
+.feature-card {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), 
+              border-color 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(199, 141, 78, 0.65);
+}
+
+/* Button glow effect */
+.btn-glow {
+  position: relative;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, rgba(199, 141, 78, 0.4), transparent);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(12px);
+}
+
+.btn-glow:hover::after {
+  opacity: 1;
+}
+
+/* Text reveal animation helper */
+.split-text .word {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.split-text .char {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* Partner pill styling */
+.partner-pill {
+  @apply px-5 py-2 rounded-full border border-offwhite-muted/30 
+         text-offwhite-muted text-sm font-medium transition-all duration-300;
+}
+
+.partner-pill:hover {
+  @apply border-copper/50 text-copper;
+}
+
+/* Badge styling */
+.compliance-badge {
+  @apply px-4 py-2 rounded-lg bg-charcoal-soft/50 border border-offwhite-muted/20
+         text-offwhite text-sm font-mono tracking-wider;
+}
+
+/* Form input styling */
+.form-input {
+  @apply w-full px-4 py-3 rounded-lg bg-charcoal-soft/30 border border-offwhite-muted/20
+         text-offwhite placeholder:text-offwhite-muted/50
+         focus:border-copper focus:outline-none focus:ring-1 focus:ring-copper/30
+         transition-all duration-300;
+}
+
+/* Mobile menu overlay */
+.mobile-menu-overlay {
+  @apply fixed inset-0 bg-charcoal/95 backdrop-blur-lg z-50
+         flex flex-col items-center justify-center gap-8;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  @apply absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2
+         text-offwhite-muted text-sm animate-bounce;
+}
+
+/* Navigation blur effect */
+.nav-blur {
+  @apply backdrop-blur-lg bg-charcoal/80;
+}

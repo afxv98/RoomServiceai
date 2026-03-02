@@ -1,0 +1,9 @@
+PLACEHOLDER FILE
+================
+
+Replace this file with your actual PDF brochure:
+
+Required file name: RoomService-AI-Brochure.pdf
+Required location: /public/brochure/
+
+See PDF_INSTRUCTIONS.txt for detailed setup guide.

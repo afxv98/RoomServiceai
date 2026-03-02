@@ -1,0 +1,73 @@
+PDF BROCHURE SETUP INSTRUCTIONS
+=================================
+
+IMPORTANT: Place your PDF brochure file here with the exact name:
+
+  RoomService-AI-Brochure.pdf
+
+Once the PDF is in place, the "Download Brochure" button will automatically download it when clicked.
+
+---
+
+HOW TO CREATE THE PDF:
+=================================
+
+Option 1: Export from Design Tool (Recommended)
+------------------------------------------------
+If you have the brochure in Figma, Canva, Adobe, etc:
+1. Export as PDF with these settings:
+   - Size: A4 or Letter
+   - Quality: High/Print quality
+   - Include: All pages
+2. Save as "RoomService-AI-Brochure.pdf"
+3. Place in this directory: /public/brochure/
+
+Option 2: Use Browser Print-to-PDF (Quick)
+-------------------------------------------
+If you want to use the web brochure page:
+1. Visit: http://localhost:3000/brochure
+2. Right-click → Print (or Cmd/Ctrl + P)
+3. Select "Save as PDF" as destination
+4. Configure settings:
+   - Layout: Portrait
+   - Paper size: A4
+   - Margins: Default or None
+   - Background graphics: ON (important!)
+   - Scale: 100%
+5. Save as "RoomService-AI-Brochure.pdf"
+6. Place in this directory: /public/brochure/
+
+Option 3: Professional PDF Generation
+--------------------------------------
+For best quality:
+1. Use Adobe Acrobat, InDesign, or similar
+2. Create a multi-page PDF with:
+   - Brand colors (copper, charcoal)
+   - High-res images
+   - Professional typography
+   - Contact information
+3. Save as "RoomService-AI-Brochure.pdf"
+4. Place in this directory: /public/brochure/
+
+---
+
+FILE REQUIREMENTS:
+==================
+- File name: RoomService-AI-Brochure.pdf (exact)
+- Location: /public/brochure/
+- Format: PDF
+- Recommended size: Under 5MB for fast downloads
+- Recommended pages: 4-8 pages
+
+---
+
+WHAT HAPPENS WHEN USER CLICKS DOWNLOAD:
+========================================
+✓ PDF downloads immediately (no print dialog)
+✓ File name: RoomService-AI-Brochure.pdf
+✓ One-click experience
+✓ Works on all browsers
+
+---
+
+DELETE THIS FILE once you've placed your PDF!

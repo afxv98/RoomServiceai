@@ -1,0 +1,37 @@
+BROCHURE IMAGE PLACEMENT GUIDE
+================================
+
+Please save your 4 uploaded images to this directory with the following names:
+
+1. hero-luxury-room.jpg
+   - The luxury hotel room with vintage phone image
+   - Used in: Hero section as parallax background
+   - Recommended size: 1920x1080 or larger
+
+2. hotel-staff-management.jpg
+   - The hotel staff at reception with "Seamless Order Management" overlay
+   - Used in: Solution Overview section
+   - Recommended size: 1600x900 or larger
+
+3. kitchen-operations.jpg
+   - The kitchen/chef scene with "Premium Hospitality AI" overlay
+   - Used in: Proven Metrics section
+   - Recommended size: 1600x900 or larger
+
+4. room-service-cart.jpg
+   - The room service cart with luxury hotel room in background
+   - Used in: Technology Stack section
+   - Recommended size: 1600x900 or larger
+
+IMPORTANT:
+- All images should be high-quality JPGs
+- Optimize images before uploading (keep file sizes under 500KB each)
+- The code uses Next.js Image optimization automatically
+- Once images are in place, delete this guide file
+
+Current Implementation:
+✅ All image references are already in the code
+✅ Parallax effects configured
+✅ Lazy loading enabled
+✅ Hover zoom animations ready
+✅ Responsive sizing configured

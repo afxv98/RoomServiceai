@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum LeadStatus {
+  lead
+  contacted
+  demo
+  proposal
+  won
+  lost
+}
+
+enum ActivityType {
+  lead_created
+  sms_sent
+  call_made
+  email_sent
+  demo_scheduled
+  demo_completed
+  proposal_sent
+  stage_changed
+  note_added
+}
+
+model Lead {
+  id             Int          @id @default(autoincrement())
+  hotelName      String
+  contactName    String
+  role           String
+  phone          String
+  mobile         String
+  email          String
+  city           String
+  country        String
+  timezone       String       @default("UTC")
+  status         LeadStatus   @default(lead)
+  value          Int          @default(0)
+  nextActionDate DateTime?
+  lastActivity   String?
+  assignedToId   Int?
+  assignedTo     SalesRep?    @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  activities     Activity[]
+  notes          Note[]
+
+  @@map("leads")
+}
+
+model Activity {
+  id        Int          @id @default(autoincrement())
+  leadId    Int
+  lead      Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type      ActivityType
+  timestamp DateTime     @default(now())
+  user      String
+  note      String?
+  duration  Int?
+  createdAt DateTime     @default(now())
+
+  @@map("activities")
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  leadId    Int
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  text      String
+  user      String
+  timestamp DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  @@map("notes")
+}
+
+model SalesRep {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  region       String   @default("")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  leads        Lead[]
+
+  @@map("sales_reps")
+}
+
+model HotelUser {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  name         String   @default("")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("hotel_users")
+}
+
+model BlogPost {
+  id        Int      @id @default(autoincrement())
+  title     String
+  excerpt   String
+  content   String   @db.Text
+  author    String
+  date      String
+  readTime  String   @default("")
+  category  String   @default("Technology")
+  image     String   @default("")
+  slug      String   @unique
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("blog_posts")
+}
