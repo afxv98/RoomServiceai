@@ -196,7 +196,9 @@ function EventModal({ event, defaultDate, salesReps, onSave, onDelete, onClose }
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function AdminCalendarPage() {
-  const { success, error: showError } = useNotification();
+  const { toast } = useNotification();
+  const success = (msg) => toast.success(msg);
+  const showError = (msg) => toast.error(msg);
 
   const today = new Date();
   const [view, setView] = useState('month'); // 'month' | 'week'
