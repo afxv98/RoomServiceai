@@ -19,6 +19,14 @@ enum LeadStatus {
   lost
 }
 
+enum EventType {
+  demo
+  reminder
+  call
+  meeting
+  other
+}
+
 enum ActivityType {
   lead_created
   sms_sent
@@ -52,6 +60,7 @@ model Lead {
   updatedAt      DateTime     @updatedAt
   activities     Activity[]
   notes          Note[]
+  calendarEvents CalendarEvent[]
 
   @@map("leads")
 }
@@ -91,9 +100,30 @@ model SalesRep {
   isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  leads        Lead[]
+  leads          Lead[]
+  createdEvents  CalendarEvent[] @relation("CreatedEvents")
+  assignedEvents CalendarEvent[] @relation("AssignedEvents")
 
   @@map("sales_reps")
+}
+
+model CalendarEvent {
+  id           Int        @id @default(autoincrement())
+  title        String
+  description  String?
+  startTime    DateTime
+  endTime      DateTime?
+  type         EventType  @default(other)
+  leadId       Int?
+  lead         Lead?      @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  createdById  Int?
+  createdBy    SalesRep?  @relation("CreatedEvents", fields: [createdById], references: [id], onDelete: SetNull)
+  assignedToId Int?
+  assignedTo   SalesRep?  @relation("AssignedEvents", fields: [assignedToId], references: [id], onDelete: SetNull)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("calendar_events")
 }
 
 model HotelUser {

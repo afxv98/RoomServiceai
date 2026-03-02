@@ -12,6 +12,7 @@ const adminNavItems = [
   { href: '/admin/email',    label: 'Email Hub',      icon: 'Mail' },
   { href: '/admin/inbox',    label: 'Master Inbox',   icon: 'Inbox' },
   { href: '/admin/crm',      label: 'CRM',            icon: 'Users' },
+  { href: '/admin/calendar', label: 'Calendar',       icon: 'CalendarDays' },
   { href: '/admin/hotels',   label: 'Hotels',         icon: 'Hotel' },
   { href: '/admin/blogs',    label: 'Blogs',          icon: 'BookOpen' },
   { href: '/admin/support',  label: 'Support',        icon: 'HeadphonesIcon' },

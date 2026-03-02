@@ -63,6 +63,11 @@ export async function PUT(request, { params }) {
     if (lastActivity !== undefined) updateData.lastActivity = lastActivity;
     if (assignedToId !== undefined) updateData.assignedToId = assignedToId ? parseInt(assignedToId) : null;
 
+    const prevLead = await prisma.lead.findUnique({
+      where: { id: parseInt(params.id) },
+      select: { nextActionDate: true, hotelName: true, assignedToId: true },
+    });
+
     const lead = await prisma.lead.update({
       where: { id: parseInt(params.id) },
       data: updateData,
@@ -72,6 +77,24 @@ export async function PUT(request, { params }) {
         assignedTo: { select: { id: true, name: true, email: true } },
       },
     });
+
+    // Auto-create a reminder calendar event when nextActionDate is newly set or changed
+    if (
+      nextActionDate !== undefined &&
+      nextActionDate &&
+      String(prevLead?.nextActionDate) !== String(new Date(nextActionDate))
+    ) {
+      const assignedTo = lead.assignedToId || prevLead?.assignedToId || null;
+      await prisma.calendarEvent.create({
+        data: {
+          title: `Reminder: ${lead.hotelName}`,
+          startTime: new Date(nextActionDate),
+          type: 'reminder',
+          leadId: lead.id,
+          assignedToId: assignedTo,
+        },
+      });
+    }
 
     return NextResponse.json(lead);
   } catch (error) {
