@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useNotification } from '@/contexts/NotificationContext';
 import {
   Phone,
@@ -27,10 +28,28 @@ import {
   Download,
   AlertCircle,
   CheckCircle2,
+  Search,
+  LayoutList,
+  Filter,
+  ArrowUpDown,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
 } from 'lucide-react';
+
+const STATUS_COLORS = {
+  lead:      'bg-gray-100 text-gray-700',
+  contacted: 'bg-blue-100 text-blue-700',
+  demo:      'bg-purple-100 text-purple-700',
+  proposal:  'bg-amber-100 text-amber-700',
+  won:       'bg-green-100 text-green-700',
+  lost:      'bg-red-100 text-red-700',
+};
+
+const PAGE_SIZE_OPTIONS = [10, 25, 50, 100, 500];
 
 export default function CRMPage() {
   const { toast, confirm } = useNotification();
+  const router = useRouter();
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState(null);
@@ -45,6 +64,17 @@ export default function CRMPage() {
   const [csvRows, setCsvRows] = useState([]);
   const [csvErrors, setCsvErrors] = useState([]);
   const [csvImporting, setCsvImporting] = useState(false);
+
+  // Search / filter / view
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [viewMode, setViewMode] = useState('kanban'); // 'kanban' | 'table'
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Schedule demo modal
+  const [showDemoModal, setShowDemoModal] = useState(false);
+  const [demoForm, setDemoForm] = useState({ date: '', time: '' });
 
   const fetchLeads = useCallback(async () => {
     try {
@@ -73,8 +103,24 @@ export default function CRMPage() {
     { id: 'lost', label: 'Lost' },
   ];
 
+  // Filtered leads (search + status filter) – used by both kanban and table views
+  const filteredLeads = leads.filter((lead) => {
+    const q = search.toLowerCase();
+    const matchSearch = !q ||
+      lead.hotelName.toLowerCase().includes(q) ||
+      lead.contactName.toLowerCase().includes(q) ||
+      lead.email.toLowerCase().includes(q) ||
+      (lead.phone || '').includes(q) ||
+      (lead.city || '').toLowerCase().includes(q);
+    const matchStatus = statusFilter === 'all' || lead.status === statusFilter;
+    return matchSearch && matchStatus;
+  });
+
+  const totalPages = Math.ceil(filteredLeads.length / pageSize);
+  const pagedLeads = filteredLeads.slice((page - 1) * pageSize, page * pageSize);
+
   const getLeadsByStatus = (status) => {
-    return leads.filter((lead) => lead.status === status);
+    return filteredLeads.filter((lead) => lead.status === status);
   };
 
   const totalPipelineValue = leads.reduce((sum, lead) => sum + lead.value, 0);
@@ -122,29 +168,42 @@ export default function CRMPage() {
   };
 
   const handleEmail = () => {
-    window.location.href = `mailto:${selectedLead.email}?subject=RoomService AI - Follow Up`;
+    router.push(`/admin/email?compose=1&to=${encodeURIComponent(selectedLead.email)}&subject=${encodeURIComponent(`RoomService AI – ${selectedLead.hotelName}`)}`);
   };
 
-  const handleScheduleDemo = async () => {
-    const date = prompt('Enter demo date (YYYY-MM-DD):');
-    const time = prompt('Enter demo time (HH:MM):');
-    if (date && time) {
-      await Promise.all([
-        fetch(`/api/crm/leads/${selectedLead.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: 'demo', lastActivity: `Demo scheduled · Just now` }),
-        }),
-        fetch(`/api/crm/leads/${selectedLead.id}/activities`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'demo_scheduled', user: 'Admin', note: `Demo set for ${date} at ${time}` }),
-        }),
-      ]);
-      toast.success(`Demo scheduled for ${date} at ${time}`);
-      fetchLeads();
-      setSelectedLead({ ...selectedLead, status: 'demo' });
+  const handleScheduleDemo = () => {
+    setDemoForm({ date: '', time: '' });
+    setShowDemoModal(true);
+  };
+
+  const handleScheduleDemoSubmit = async () => {
+    if (!demoForm.date || !demoForm.time) {
+      toast.error('Please enter both date and time');
+      return;
     }
+    const startTime = new Date(`${demoForm.date}T${demoForm.time}`).toISOString();
+    await Promise.all([
+      fetch(`/api/crm/leads/${selectedLead.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'demo', lastActivity: 'Demo scheduled · Just now' }),
+      }),
+      fetch(`/api/crm/leads/${selectedLead.id}/activities`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'demo_scheduled',
+          user: 'Admin',
+          note: `Demo set for ${demoForm.date} at ${demoForm.time}`,
+          eventDate: startTime,
+          assignedToId: selectedLead.assignedToId,
+        }),
+      }),
+    ]);
+    toast.success(`Demo scheduled for ${demoForm.date} at ${demoForm.time} — event added to calendar`);
+    setShowDemoModal(false);
+    fetchLeads();
+    setSelectedLead({ ...selectedLead, status: 'demo' });
   };
 
   const handleAddNote = async () => {
@@ -488,7 +547,57 @@ export default function CRMPage() {
         </div>
       </div>
 
-      {/* Pipeline Board */}
+      {/* Search, Filter & View Controls */}
+      <div className="flex flex-wrap items-center gap-3 mb-4">
+        {/* Search */}
+        <div className="relative flex-1 min-w-[180px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <input
+            className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-copper/30 focus:border-copper bg-white"
+            placeholder="Search leads…"
+            value={search}
+            onChange={e => { setSearch(e.target.value); setPage(1); }}
+          />
+        </div>
+        {/* Status filter */}
+        <div className="flex items-center gap-1.5">
+          <Filter className="w-4 h-4 text-gray-400" />
+          <select
+            className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-copper/30 focus:border-copper bg-white"
+            value={statusFilter}
+            onChange={e => { setStatusFilter(e.target.value); setPage(1); }}
+          >
+            <option value="all">All Stages</option>
+            <option value="lead">Lead</option>
+            <option value="contacted">Contacted</option>
+            <option value="demo">Demo</option>
+            <option value="proposal">Proposal</option>
+            <option value="won">Won</option>
+            <option value="lost">Lost</option>
+          </select>
+        </div>
+        {/* View toggle */}
+        <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-white">
+          <button
+            onClick={() => setViewMode('kanban')}
+            className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-colors ${viewMode === 'kanban' ? 'bg-copper text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+          >
+            <ArrowUpDown className="w-3.5 h-3.5" /> Kanban
+          </button>
+          <button
+            onClick={() => { setViewMode('table'); setPage(1); }}
+            className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-colors ${viewMode === 'table' ? 'bg-copper text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+          >
+            <LayoutList className="w-3.5 h-3.5" /> All Leads
+          </button>
+        </div>
+        {filteredLeads.length !== leads.length && (
+          <span className="text-xs text-gray-500">{filteredLeads.length} of {leads.length} leads</span>
+        )}
+      </div>
+
+      {/* ── Kanban Board ── */}
+      {viewMode === 'kanban' && (
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
         {columns.map((column) => (
           <div
@@ -539,6 +648,92 @@ export default function CRMPage() {
           </div>
         ))}
       </div>
+      )} {/* end kanban */}
+
+      {/* ── All Leads Table View ── */}
+      {viewMode === 'table' && (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100 bg-gray-50">
+                  {['Hotel', 'Contact', 'Role', 'Phone', 'Email', 'Location', 'Status', 'Value', 'Next Action', 'Assigned To', 'Last Activity'].map(h => (
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {pagedLeads.length === 0 && (
+                  <tr>
+                    <td colSpan={11} className="text-center py-12 text-gray-400 text-sm">
+                      {search || statusFilter !== 'all' ? 'No leads match your filters.' : 'No leads yet.'}
+                    </td>
+                  </tr>
+                )}
+                {pagedLeads.map(lead => (
+                  <tr
+                    key={lead.id}
+                    className="hover:bg-gray-50 cursor-pointer transition-colors"
+                    onClick={() => handleLeadClick(lead)}
+                  >
+                    <td className="px-4 py-3">
+                      <p className="font-semibold text-charcoal">{lead.hotelName}</p>
+                    </td>
+                    <td className="px-4 py-3 text-gray-700 whitespace-nowrap">{lead.contactName}</td>
+                    <td className="px-4 py-3 text-gray-500 whitespace-nowrap">{lead.role}</td>
+                    <td className="px-4 py-3 text-gray-500 whitespace-nowrap">{lead.phone || lead.mobile}</td>
+                    <td className="px-4 py-3 text-gray-500 max-w-[160px] truncate">{lead.email}</td>
+                    <td className="px-4 py-3 text-gray-500 whitespace-nowrap">{[lead.city, lead.country].filter(Boolean).join(', ')}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-semibold capitalize ${STATUS_COLORS[lead.status]}`}>
+                        {lead.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-copper font-semibold whitespace-nowrap">£{lead.value.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
+                      {lead.nextActionDate ? new Date(lead.nextActionDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—'}
+                    </td>
+                    <td className="px-4 py-3 text-gray-500 whitespace-nowrap">{lead.assignedTo?.name || '—'}</td>
+                    <td className="px-4 py-3 text-gray-400 text-xs max-w-[160px] truncate">{lead.lastActivity || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100 bg-gray-50">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500">Show</span>
+              <select
+                className="border border-gray-200 rounded px-2 py-1 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-copper"
+                value={pageSize}
+                onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }}
+              >
+                {PAGE_SIZE_OPTIONS.map(n => <option key={n} value={n}>{n}</option>)}
+              </select>
+              <span className="text-xs text-gray-500">per page · {filteredLeads.length} total</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="p-1.5 rounded hover:bg-gray-200 disabled:opacity-40 transition-colors"
+              >
+                <ChevronLeftIcon className="w-4 h-4 text-gray-600" />
+              </button>
+              <span className="text-xs text-gray-600 px-2">Page {page} of {Math.max(1, totalPages)}</span>
+              <button
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                className="p-1.5 rounded hover:bg-gray-200 disabled:opacity-40 transition-colors"
+              >
+                <ChevronRightIcon className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Lead Detail Drawer */}
       {selectedLead && (
@@ -1233,6 +1428,65 @@ export default function CRMPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </>
+      )}
+
+      {/* ── Schedule Demo Modal ── */}
+      {showDemoModal && (
+        <>
+          <div className="fixed inset-0 bg-black/40 z-50" onClick={() => setShowDemoModal(false)} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm pointer-events-auto">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <h2 className="font-bold text-charcoal flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-purple-500" />
+                  Schedule Demo
+                </h2>
+                <button onClick={() => setShowDemoModal(false)} className="p-1.5 rounded hover:bg-gray-100 text-gray-400">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="p-6 space-y-4">
+                {selectedLead && (
+                  <p className="text-sm text-gray-500">
+                    Scheduling demo for <strong>{selectedLead.hotelName}</strong>
+                  </p>
+                )}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 mb-1">Date *</label>
+                  <input
+                    type="date"
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-copper/30 focus:border-copper"
+                    value={demoForm.date}
+                    onChange={e => setDemoForm(f => ({ ...f, date: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 mb-1">Time *</label>
+                  <input
+                    type="time"
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-copper/30 focus:border-copper"
+                    value={demoForm.time}
+                    onChange={e => setDemoForm(f => ({ ...f, time: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <div className="flex gap-3 px-6 pb-5">
+                <button
+                  onClick={() => setShowDemoModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleScheduleDemoSubmit}
+                  className="flex-1 px-4 py-2 bg-purple-500 text-white rounded-lg text-sm font-medium hover:bg-purple-600 transition-colors"
+                >
+                  Confirm &amp; Add to Calendar
+                </button>
+              </div>
+            </div>
           </div>
         </>
       )}
