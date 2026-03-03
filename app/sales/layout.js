@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { TrendingUp, LogOut, Loader2, CalendarDays } from 'lucide-react';
+import { TrendingUp, LogOut, Loader2, CalendarDays, Users, Mail } from 'lucide-react';
 
 export default function SalesLayout({ children }) {
   const router = useRouter();
@@ -52,6 +52,22 @@ export default function SalesLayout({ children }) {
           </div>
         </div>
         <div className="flex items-center gap-4">
+          <Link
+            href="/sales/crm"
+            className={`flex items-center gap-1.5 text-sm transition-colors ${
+              pathname?.startsWith('/sales/crm') ? 'text-white' : 'text-gray-300 hover:text-white'
+            }`}
+          >
+            <Users className="w-4 h-4" /> CRM
+          </Link>
+          <Link
+            href="/sales/email"
+            className={`flex items-center gap-1.5 text-sm transition-colors ${
+              pathname?.startsWith('/sales/email') ? 'text-white' : 'text-gray-300 hover:text-white'
+            }`}
+          >
+            <Mail className="w-4 h-4" /> Email
+          </Link>
           <Link
             href="/sales/calendar"
             className={`flex items-center gap-1.5 text-sm transition-colors ${

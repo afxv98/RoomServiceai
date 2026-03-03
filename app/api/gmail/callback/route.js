@@ -5,11 +5,14 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
   const error = searchParams.get('error');
+  const state = searchParams.get('state') || 'admin';
+  const isSales = state === 'sales';
 
   const base = new URL(request.url).origin;
+  const errorRedirect = isSales ? `${base}/sales/email?gmail_error=auth_denied` : `${base}/admin/email?gmail_error=auth_denied`;
 
   if (error || !code) {
-    return NextResponse.redirect(`${base}/admin/email?gmail_error=auth_denied`);
+    return NextResponse.redirect(errorRedirect);
   }
 
   try {
@@ -17,18 +20,17 @@ export async function GET(request) {
     const { tokens } = await client.getToken(code);
 
     if (!tokens.refresh_token) {
-      // Refresh token is only returned on first authorization or when prompt=consent.
-      // If it's missing, the account was already authorized — direct the admin to
-      // revoke access in Google and re-connect.
-      return NextResponse.redirect(
-        `${base}/admin/email?gmail_error=no_refresh_token`,
-      );
+      const noTokenRedirect = isSales
+        ? `${base}/sales/email?gmail_error=no_refresh_token`
+        : `${base}/admin/email?gmail_error=no_refresh_token`;
+      return NextResponse.redirect(noTokenRedirect);
     }
 
-    // Store the refresh token in a long-lived httpOnly cookie.
-    // This is the primary persistence mechanism for serverless deployments.
-    const response = NextResponse.redirect(`${base}/admin/email?gmail_connected=1`);
-    response.cookies.set('gmail_refresh_token', tokens.refresh_token, {
+    const cookieName = isSales ? 'sales_gmail_refresh_token' : 'gmail_refresh_token';
+    const successRedirect = isSales ? `${base}/sales/email?gmail_connected=1` : `${base}/admin/email?gmail_connected=1`;
+
+    const response = NextResponse.redirect(successRedirect);
+    response.cookies.set(cookieName, tokens.refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -38,6 +40,7 @@ export async function GET(request) {
     return response;
   } catch (err) {
     console.error('Gmail OAuth callback error:', err);
-    return NextResponse.redirect(`${base}/admin/email?gmail_error=auth_failed`);
+    const failRedirect = isSales ? `${base}/sales/email?gmail_error=auth_failed` : `${base}/admin/email?gmail_error=auth_failed`;
+    return NextResponse.redirect(failRedirect);
   }
 }
