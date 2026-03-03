@@ -176,7 +176,7 @@ function CreateCampaignModal({ onClose, onCreated }) {
     setSaving(true);
     setErr('');
     try {
-      const res = await sl('campaigns', {
+      const res = await sl('campaigns/create', {
         method: 'POST',
         body: JSON.stringify({
           ...form,
