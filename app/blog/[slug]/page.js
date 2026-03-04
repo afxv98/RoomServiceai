@@ -23,7 +23,7 @@ export default function BlogPostPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/blogs?published=true&slug=${encodeURIComponent(params.slug)}`)
+    fetch(`/api/blogs?slug=${encodeURIComponent(params.slug)}`)
       .then((r) => r.json())
       .then((data) => setPost(data ?? null))
       .catch(() => setPost(null))
