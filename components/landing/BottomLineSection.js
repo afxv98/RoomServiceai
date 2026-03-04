@@ -8,7 +8,7 @@ export default function BottomLineSection() {
           <span className="text-copper font-bold uppercase tracking-widest text-xs">
             THE BOTTOM LINE
           </span>
-          <h2 className="text-4xl font-bold mt-2 mb-4 font-sora">
+          <h2 className="text-4xl font-bold mt-2 mb-4 font-cormorant">
             Room service doesn't need more staff.
             <br />
             <span className="text-copper">It needs a better system.</span>

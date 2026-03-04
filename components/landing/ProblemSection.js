@@ -46,7 +46,7 @@ export default function ProblemSection() {
 
           {/* Headline */}
           <h2
-            className="font-sora font-bold text-offwhite leading-tight tracking-tight mb-8"
+            className="font-cormorant font-bold text-offwhite leading-tight tracking-tight mb-8"
             style={{ fontSize: 'clamp(32px, 3.6vw, 56px)' }}
           >
             Always on, never overwhelmed.

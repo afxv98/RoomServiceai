@@ -8,7 +8,7 @@ export default function ImplementationSection() {
           <span className="text-copper font-bold uppercase tracking-widest text-xs">
             IMPLEMENTATION
           </span>
-          <h2 className="text-4xl font-bold mt-2 mb-4 font-sora">
+          <h2 className="text-4xl font-bold mt-2 mb-4 font-cormorant">
             Go Live in Weeks, Not Months
           </h2>
         </div>

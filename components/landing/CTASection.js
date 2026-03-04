@@ -191,7 +191,7 @@ export default function CTASection() {
         <div className="rounded-2xl overflow-hidden shadow-card flex flex-col md:flex-row bg-charcoal-soft/30 border border-offwhite-muted/10">
           <div className="md:w-1/2 p-8 md:p-12 lg:p-16 text-white flex flex-col justify-center border-b md:border-b-0 md:border-r border-offwhite-muted/10">
             <span className="micro-label mb-4 block">GET IN TOUCH</span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 font-sora text-offwhite">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 font-cormorant text-offwhite">
               Ready to reimagine room service?
             </h2>
             <p className="text-offwhite-muted mb-8 text-base md:text-lg leading-relaxed">

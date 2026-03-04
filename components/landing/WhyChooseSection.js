@@ -20,7 +20,7 @@ export default function WhyChooseSection() {
             <span className="text-copper font-bold uppercase tracking-widest text-xs">
               WHY HOTELS CHOOSE ROOMSERVICE AI
             </span>
-            <h2 className="text-4xl font-bold mt-2 mb-4 font-sora text-charcoal">
+            <h2 className="text-4xl font-bold mt-2 mb-4 font-cormorant text-charcoal">
               Because It Fixes the Economics
             </h2>
             <p className="text-xl text-charcoal/70 max-w-2xl mx-auto">

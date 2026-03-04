@@ -5,7 +5,7 @@ export default function WhatsIncludedSection() {
     <section id="whats-included" className="py-24 bg-offwhite">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 font-sora">What's Included</h2>
+          <h2 className="text-4xl font-bold mb-4 font-cormorant">What's Included</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">

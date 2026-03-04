@@ -53,7 +53,7 @@ export default function HowItWorksSection() {
 
           {/* Headline */}
           <h2
-            className="font-sora font-bold text-offwhite leading-tight tracking-tight mb-12"
+            className="font-cormorant font-bold text-offwhite leading-tight tracking-tight mb-12"
             style={{ fontSize: 'clamp(32px, 3.6vw, 56px)' }}
           >
             Guest → AI → Kitchen
@@ -74,7 +74,7 @@ export default function HowItWorksSection() {
                     {step.number}
                   </span>
                   <div>
-                    <h3 className="font-sora font-semibold text-offwhite text-lg mb-1">
+                    <h3 className="font-cormorant font-semibold text-offwhite text-lg mb-1">
                       {step.title}
                     </h3>
                     <p className="text-offwhite-muted text-sm">

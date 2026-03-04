@@ -10,7 +10,7 @@ export default function SolutionSection() {
             <span className="text-copper font-bold uppercase tracking-widest text-xs">
               THE SOLUTION
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4 font-sora text-charcoal">
+            <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4 font-cormorant text-charcoal">
               Voice-First Room Service Infrastructure
             </h2>
             <p className="text-base md:text-lg text-charcoal/70 max-w-3xl mx-auto">
@@ -23,7 +23,7 @@ export default function SolutionSection() {
           {/* Guests order via */}
           <ScrollAnimation animation="fade-right" delay={200} duration={600}>
             <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-charcoal font-sora">Guests order via:</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-charcoal font-cormorant">Guests order via:</h3>
               <div className="space-y-3 md:space-y-4">
                 <div className="flex items-center gap-3 md:gap-4 p-3 md:p-4 bg-white rounded-lg border border-gray-200">
                   <Phone className="w-6 h-6 md:w-8 md:h-8 text-copper flex-shrink-0" />
@@ -44,7 +44,7 @@ export default function SolutionSection() {
           {/* Every order is */}
           <ScrollAnimation animation="fade-left" delay={200} duration={600}>
             <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-charcoal font-sora">Every order is:</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-charcoal font-cormorant">Every order is:</h3>
               <div className="space-y-3 md:space-y-4">
                 <div className="flex items-start gap-3">
                   <Check className="w-6 h-6 text-copper flex-shrink-0 mt-1" />
