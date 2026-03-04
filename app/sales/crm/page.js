@@ -7,6 +7,7 @@ import {
   DollarSign, TrendingUp, Users, Percent, Clock, Send, User,
   MapPin, Globe, Plus, Edit, Trash2, Save, AlertCircle,
   Search, LayoutList, ArrowUpDown, Filter, StickyNote,
+  Upload, Download, CheckCircle2,
   ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,
 } from 'lucide-react';
 
@@ -59,6 +60,13 @@ export default function SalesCRMPage() {
   const [smsMessage, setSmsMessage] = useState('');
   const [showDemoModal, setShowDemoModal] = useState(false);
   const [demoForm, setDemoForm] = useState({ date: '', time: '' });
+
+  // New lead / CSV modals
+  const [showNewLeadModal, setShowNewLeadModal] = useState(false);
+  const [showCsvModal, setShowCsvModal] = useState(false);
+  const [csvRows, setCsvRows] = useState([]);
+  const [csvErrors, setCsvErrors] = useState([]);
+  const [csvImporting, setCsvImporting] = useState(false);
 
   // Search / filter / view / pagination
   const [search, setSearch] = useState('');
@@ -214,6 +222,105 @@ export default function SalesCRMPage() {
     showToast('Lead updated');
   };
 
+  // ── New Lead ──────────────────────────────────────────────────────────────
+  const handleCreateLead = async (formData) => {
+    const res = await fetch('/api/crm/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...formData, user: rep?.name || 'Rep', assignedToId: rep?.id }),
+    });
+    if (res.ok) {
+      showToast('Lead created successfully');
+      fetchLeads();
+      setShowNewLeadModal(false);
+    } else {
+      showToast('Failed to create lead', 'error');
+    }
+  };
+
+  // ── CSV Upload ─────────────────────────────────────────────────────────────
+  const CSV_FIELD_MAP = {
+    hotelname: 'hotelName', 'hotel name': 'hotelName', hotel: 'hotelName', property: 'hotelName', 'property name': 'hotelName',
+    contactname: 'contactName', 'contact name': 'contactName', contact: 'contactName', name: 'contactName',
+    role: 'role', position: 'role', title: 'role', 'job title': 'role',
+    phone: 'phone', telephone: 'phone', tel: 'phone',
+    mobile: 'mobile', cell: 'mobile', cellphone: 'mobile',
+    email: 'email', 'email address': 'email',
+    city: 'city', location: 'city',
+    country: 'country',
+    timezone: 'timezone', 'time zone': 'timezone', tz: 'timezone',
+    value: 'value', 'deal value': 'value', price: 'value', amount: 'value',
+    nextactiondate: 'nextActionDate', 'next action date': 'nextActionDate', 'next action': 'nextActionDate', 'action date': 'nextActionDate',
+  };
+
+  const parseCsv = (text) => {
+    const lines = text.trim().split(/\r?\n/);
+    if (lines.length < 2) return { rows: [], errors: ['CSV must have a header row and at least one data row.'] };
+    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
+    const fieldKeys = headers.map(h => CSV_FIELD_MAP[h] || null);
+    const rows = [], errors = [];
+    lines.slice(1).forEach((line, i) => {
+      if (!line.trim()) return;
+      const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+      const row = {};
+      fieldKeys.forEach((key, j) => { if (key) row[key] = values[j] ?? ''; });
+      const rowErrors = [];
+      if (!row.hotelName) rowErrors.push('Hotel Name required');
+      if (!row.contactName) rowErrors.push('Contact Name required');
+      if (rowErrors.length) errors.push(`Row ${i + 2}: ${rowErrors.join(', ')}`);
+      else rows.push(row);
+    });
+    return { rows, errors };
+  };
+
+  const handleCsvFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const { rows, errors } = parseCsv(ev.target.result);
+      setCsvRows(rows);
+      setCsvErrors(errors);
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
+  const handleCsvImport = async () => {
+    if (!csvRows.length) return;
+    setCsvImporting(true);
+    try {
+      const res = await fetch('/api/crm/leads/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ leads: csvRows, assignedToId: rep?.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Import failed');
+      showToast(`${data.created} lead${data.created !== 1 ? 's' : ''} imported successfully`);
+      setShowCsvModal(false);
+      setCsvRows([]);
+      setCsvErrors([]);
+      fetchLeads();
+    } catch (err) {
+      showToast(err.message || 'Import failed', 'error');
+    } finally {
+      setCsvImporting(false);
+    }
+  };
+
+  const downloadTemplate = () => {
+    const header = 'hotelName,contactName,role,phone,mobile,email,city,country,timezone,value,nextActionDate';
+    const example = 'The Dorchester,John Smith,General Manager,+44 20 7629 8888,+44 7700 900123,john@dorchester.com,London,United Kingdom,Europe/London,45000,2026-04-01';
+    const blob = new Blob([`${header}\n${example}\n`], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'crm_leads_template.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const timeAgo = (d) => {
     const ms = Date.now() - new Date(d);
     const m = Math.floor(ms / 60000), h = Math.floor(ms / 3600000), day = Math.floor(ms / 86400000);
@@ -241,6 +348,22 @@ export default function SalesCRMPage() {
         <div>
           <h1 className="text-3xl font-bold text-charcoal font-playfair mb-1">My CRM</h1>
           <p className="text-gray-500 text-sm">Your assigned leads and pipeline</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowCsvModal(true)}
+            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-sm font-medium hover:bg-gray-50 transition-colors"
+          >
+            <Upload className="w-4 h-4" />
+            Upload CSV
+          </button>
+          <button
+            onClick={() => setShowNewLeadModal(true)}
+            className="flex items-center gap-2 px-4 py-2.5 bg-copper text-white rounded-sm font-medium hover:bg-copper/90 transition-colors"
+          >
+            <Plus className="w-5 h-5" />
+            New Lead
+          </button>
         </div>
       </div>
 
@@ -609,6 +732,205 @@ export default function SalesCRMPage() {
                 </button>
               </div>
             </div>
+          </div>
+        </>
+      )}
+
+      {/* New Lead Modal */}
+      {showNewLeadModal && (
+        <>
+          <div className="fixed inset-0 bg-black/50 z-[60]" onClick={() => setShowNewLeadModal(false)} />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-sm shadow-2xl z-[70] p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-charcoal">Create New Lead</h3>
+              <button onClick={() => setShowNewLeadModal(false)} className="p-2 hover:bg-gray-100 rounded-sm transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleCreateLead(Object.fromEntries(new FormData(e.target)));
+                e.target.reset();
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Hotel Name *</label>
+                <input type="text" name="hotelName" required placeholder="The Dorchester"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                  <input type="text" name="city" required placeholder="London"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+                  <input type="text" name="country" required placeholder="United Kingdom"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                </div>
+              </div>
+              <div className="border-t pt-4">
+                <h4 className="text-sm font-bold text-gray-700 mb-3">Contact Person</h4>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Contact Name *</label>
+                      <input type="text" name="contactName" required placeholder="John Smith"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Role *</label>
+                      <input type="text" name="role" required placeholder="General Manager"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone *</label>
+                      <input type="tel" name="phone" required placeholder="+44 20 7629 8888"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Mobile *</label>
+                      <input type="tel" name="mobile" required placeholder="+44 7700 900123"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                    <input type="email" name="email" required placeholder="contact@hotel.com"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                  </div>
+                </div>
+              </div>
+              <div className="border-t pt-4">
+                <h4 className="text-sm font-bold text-gray-700 mb-3">Deal Information</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Deal Value (£) *</label>
+                    <input type="number" name="value" required placeholder="45000" min="0"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Next Action Date</label>
+                    <input type="date" name="nextActionDate"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
+                  <input type="text" name="timezone" placeholder="Europe/London"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-sm focus:outline-none focus:border-copper" />
+                </div>
+              </div>
+              <div className="flex gap-3 pt-4 border-t">
+                <button type="button" onClick={() => setShowNewLeadModal(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-sm font-medium hover:bg-gray-50 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit"
+                  className="flex-1 px-4 py-2 bg-copper text-white rounded-sm font-medium hover:bg-copper/90 transition-colors">
+                  Create Lead
+                </button>
+              </div>
+            </form>
+          </div>
+        </>
+      )}
+
+      {/* CSV Upload Modal */}
+      {showCsvModal && (
+        <>
+          <div className="fixed inset-0 bg-black/50 z-[60]" onClick={() => { setShowCsvModal(false); setCsvRows([]); setCsvErrors([]); }} />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl bg-white rounded-sm shadow-2xl z-[70] p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-charcoal">Import Leads via CSV</h3>
+              <button onClick={() => { setShowCsvModal(false); setCsvRows([]); setCsvErrors([]); }} className="p-2 hover:bg-gray-100 rounded-sm">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Template download */}
+            <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-sm p-3 mb-4">
+              <div>
+                <p className="text-sm font-medium text-blue-800">Download CSV Template</p>
+                <p className="text-xs text-blue-600 mt-0.5">Use the correct column headers for a smooth import</p>
+              </div>
+              <button onClick={downloadTemplate}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-sm hover:bg-blue-700 transition-colors">
+                <Download className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* File picker */}
+            <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-sm p-8 cursor-pointer hover:border-copper hover:bg-copper/5 transition-colors mb-4">
+              <Upload className="w-8 h-8 text-gray-400 mb-2" />
+              <p className="text-sm font-medium text-gray-700">Click to select a CSV file</p>
+              <p className="text-xs text-gray-500 mt-1">or drag and drop</p>
+              <input type="file" accept=".csv,text/csv" className="hidden" onChange={handleCsvFile} />
+            </label>
+
+            {/* Errors */}
+            {csvErrors.length > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-sm p-3 mb-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                  <p className="text-sm font-medium text-red-700">{csvErrors.length} row{csvErrors.length !== 1 ? 's' : ''} with errors (skipped)</p>
+                </div>
+                <ul className="text-xs text-red-600 space-y-0.5 ml-6">
+                  {csvErrors.slice(0, 5).map((e, i) => <li key={i}>{e}</li>)}
+                  {csvErrors.length > 5 && <li>…and {csvErrors.length - 5} more</li>}
+                </ul>
+              </div>
+            )}
+
+            {/* Preview */}
+            {csvRows.length > 0 && (
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-500" />
+                  <p className="text-sm font-medium text-gray-700">{csvRows.length} lead{csvRows.length !== 1 ? 's' : ''} ready to import</p>
+                </div>
+                <div className="border border-gray-200 rounded-sm overflow-x-auto max-h-48">
+                  <table className="w-full text-xs">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        {['Hotel', 'Contact', 'Email', 'City', 'Value'].map(h => (
+                          <th key={h} className="text-left px-3 py-2 font-semibold text-gray-500">{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                      {csvRows.slice(0, 5).map((row, i) => (
+                        <tr key={i} className="hover:bg-gray-50">
+                          <td className="px-3 py-2 font-medium text-charcoal truncate max-w-[120px]">{row.hotelName}</td>
+                          <td className="px-3 py-2 text-gray-600 whitespace-nowrap">{row.contactName}</td>
+                          <td className="px-3 py-2 text-gray-500 truncate max-w-[140px]">{row.email}</td>
+                          <td className="px-3 py-2 text-gray-500 whitespace-nowrap">{row.city}</td>
+                          <td className="px-3 py-2 text-copper font-semibold whitespace-nowrap">{row.value ? `£${Number(row.value).toLocaleString()}` : '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {csvRows.length > 5 && (
+                  <p className="text-xs text-gray-400 mt-1 text-center">…and {csvRows.length - 5} more rows</p>
+                )}
+                <div className="flex gap-3 mt-4">
+                  <button onClick={() => { setCsvRows([]); setCsvErrors([]); }}
+                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-sm font-medium hover:bg-gray-50 transition-colors">
+                    Clear
+                  </button>
+                  <button onClick={handleCsvImport} disabled={csvImporting}
+                    className="flex-1 px-4 py-2 bg-copper text-white rounded-sm font-medium hover:bg-copper/90 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">
+                    {csvImporting ? 'Importing…' : `Import ${csvRows.length} Lead${csvRows.length !== 1 ? 's' : ''}`}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </>
       )}
