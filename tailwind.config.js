@@ -73,12 +73,11 @@ module.exports = {
       },
       fontFamily: {
         cormorant: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        // All existing font classes point to Cormorant Garamond for site-wide consistency
-        playfair:   ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        sora:       ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        inter:      ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        outfit:     ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        montserrat: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        playfair:   ['"Cormorant Garamond"', 'Georgia', 'serif'], // accent headings → Cormorant
+        inter:      ['var(--font-inter)', 'sans-serif'],
+        sora:       ['Sora', 'sans-serif'],
+        outfit:     ['var(--font-outfit)', 'sans-serif'],
+        montserrat: ['var(--font-montserrat)', 'sans-serif'],
         mono: ['IBM Plex Mono', 'monospace'],
       },
       borderRadius: {

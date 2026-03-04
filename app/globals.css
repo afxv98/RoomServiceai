@@ -48,10 +48,8 @@
   }
 
   body {
-    @apply bg-offwhite text-charcoal font-cormorant antialiased;
+    @apply bg-offwhite text-charcoal font-inter antialiased;
     overflow-x: hidden;
-    font-size: 1.05rem;
-    letter-spacing: 0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
