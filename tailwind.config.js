@@ -72,12 +72,14 @@ module.exports = {
         'off-white': '#F4F1EC', // backwards compatibility
       },
       fontFamily: {
-        outfit: ['var(--font-outfit)', 'sans-serif'],
-        inter: ['var(--font-inter)', 'sans-serif'],
-        sora: ['Sora', 'sans-serif'],
+        cormorant: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        // All existing font classes point to Cormorant Garamond for site-wide consistency
+        playfair:   ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        sora:       ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        inter:      ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        outfit:     ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        montserrat: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         mono: ['IBM Plex Mono', 'monospace'],
-        playfair: ['var(--font-playfair)', 'serif'], // backwards compatibility
-        montserrat: ['var(--font-montserrat)', 'sans-serif'], // backwards compatibility
       },
       borderRadius: {
         xl: "calc(var(--radius) + 4px)",
