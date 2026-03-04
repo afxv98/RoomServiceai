@@ -4,10 +4,12 @@ import { prisma } from '@/lib/prisma';
 // POST /api/crm/leads/bulk - create multiple leads from CSV upload
 export async function POST(request) {
   try {
-    const { leads } = await request.json();
+    const { leads, assignedToId } = await request.json();
     if (!Array.isArray(leads) || leads.length === 0) {
       return NextResponse.json({ error: 'No leads provided' }, { status: 400 });
     }
+
+    const repId = assignedToId ? parseInt(assignedToId) : null;
 
     const created = await prisma.$transaction(
       leads.map((lead) =>
@@ -26,6 +28,7 @@ export async function POST(request) {
             value:         parseInt(lead.value) || 0,
             nextActionDate: lead.nextActionDate ? new Date(lead.nextActionDate) : null,
             lastActivity:  'Lead created · CSV import',
+            assignedToId:  repId,
             activities: {
               create: {
                 type: 'lead_created',

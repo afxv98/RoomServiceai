@@ -36,6 +36,7 @@ export async function POST(request) {
       value,
       nextActionDate,
       user: createdBy,
+      assignedToId,
     } = body;
 
     const lead = await prisma.lead.create({
@@ -53,6 +54,7 @@ export async function POST(request) {
         value: parseInt(value) || 0,
         nextActionDate: nextActionDate ? new Date(nextActionDate) : null,
         lastActivity: 'Lead created · Just now',
+        assignedToId: assignedToId ? parseInt(assignedToId) : null,
         activities: {
           create: {
             type: 'lead_created',
