@@ -23,7 +23,8 @@ export default function BlogPostPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/blogs?slug=${encodeURIComponent(params.slug)}`)
+    const decodedSlug = decodeURIComponent(params.slug);
+    fetch(`/api/blogs?slug=${encodeURIComponent(decodedSlug)}`)
       .then((r) => r.json())
       .then((data) => setPost(data ?? null))
       .catch(() => setPost(null))
@@ -57,7 +58,7 @@ export default function BlogPostPage() {
             <p className="text-charcoal/70 mb-2">
               The blog post you're looking for doesn't exist or has been removed.
             </p>
-            <p className="text-sm text-charcoal/40 mb-8 font-mono">slug: "{params.slug}"</p>
+            <p className="text-sm text-charcoal/40 mb-8 font-mono">slug: "{decodeURIComponent(params.slug)}"</p>
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 px-6 py-3 bg-copper text-white rounded-lg font-semibold hover:bg-copper-hover transition-colors"
