@@ -50,7 +50,7 @@ export default function Hero() {
 
           {/* Headline */}
           <h1
-            className={`font-sora font-bold text-white leading-[1.1] tracking-tight mb-6 transition-all duration-700 delay-300 ${
+            className={`font-cormorant font-bold text-white leading-[1.1] tracking-tight mb-6 transition-all duration-700 delay-300 ${
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
             style={{ fontSize: 'clamp(30px, 4.5vw, 72px)' }}

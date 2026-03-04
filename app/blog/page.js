@@ -6,6 +6,13 @@ import Footer from '@/components/landing/Footer';
 import Link from 'next/link';
 import { Clock, User, ArrowRight } from 'lucide-react';
 
+function toDirectImageUrl(url) {
+  if (!url) return url;
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if (driveMatch) return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+  return url;
+}
+
 export default function BlogPage() {
   const [blogPosts, setBlogPosts] = useState([]);
 
@@ -25,7 +32,7 @@ export default function BlogPage() {
       {/* Hero Section */}
       <div className="pt-32 pb-16 bg-gradient-to-br from-charcoal via-charcoal to-copper/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 font-sora">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 font-cormorant">
             RoomService AI Blog
           </h1>
           <p className="text-xl text-gray-200 max-w-3xl mx-auto">
@@ -59,12 +66,20 @@ export default function BlogPage() {
               <div className="mb-16">
                 <div className="bg-offwhite rounded-lg shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-shadow">
                   <div className="grid md:grid-cols-2">
-                    <div className="bg-gradient-to-br from-copper to-copper-hover h-64 md:h-auto flex items-center justify-center">
-                      <div className="text-white text-center p-8">
-                        <div className="text-6xl mb-4">📰</div>
-                        <p className="text-lg font-medium">Featured Article</p>
+                    {blogPosts[0].image ? (
+                      <img
+                        src={toDirectImageUrl(blogPosts[0].image)}
+                        alt={blogPosts[0].title}
+                        className="w-full h-64 md:h-full object-cover"
+                      />
+                    ) : (
+                      <div className="bg-gradient-to-br from-copper to-copper-hover h-64 md:h-auto flex items-center justify-center">
+                        <div className="text-white text-center p-8">
+                          <div className="text-6xl mb-4">📰</div>
+                          <p className="text-lg font-medium">Featured Article</p>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     <div className="p-8">
                       <div className="flex items-center gap-3 mb-4">
                         <span className="px-3 py-1 bg-copper text-white text-xs font-bold rounded-full uppercase">
@@ -72,7 +87,7 @@ export default function BlogPage() {
                         </span>
                         <span className="text-sm text-gray-500">{new Date(blogPosts[0].date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                       </div>
-                      <h2 className="text-3xl font-bold mb-4 font-sora text-charcoal">
+                      <h2 className="text-3xl font-bold mb-4 font-cormorant text-charcoal">
                         {blogPosts[0].title}
                       </h2>
                       <p className="text-charcoal/70 mb-6">
@@ -109,9 +124,17 @@ export default function BlogPage() {
                       key={post.id}
                       className="bg-offwhite rounded-lg shadow-md border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow"
                     >
-                      <div className="bg-gradient-to-br from-gray-100 to-gray-200 h-48 flex items-center justify-center">
-                        <div className="text-gray-400 text-5xl">📝</div>
-                      </div>
+                      {post.image ? (
+                        <img
+                          src={toDirectImageUrl(post.image)}
+                          alt={post.title}
+                          className="w-full h-48 object-cover"
+                        />
+                      ) : (
+                        <div className="bg-gradient-to-br from-gray-100 to-gray-200 h-48 flex items-center justify-center">
+                          <div className="text-gray-400 text-5xl">📝</div>
+                        </div>
+                      )}
                       <div className="p-6">
                         <div className="flex items-center gap-3 mb-3">
                           <span className="px-2 py-1 bg-gray-100 text-charcoal/80 text-xs font-bold rounded uppercase">
@@ -119,7 +142,7 @@ export default function BlogPage() {
                           </span>
                           <span className="text-xs text-gray-500">{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                         </div>
-                        <h3 className="text-xl font-bold mb-3 text-charcoal font-sora line-clamp-2">
+                        <h3 className="text-xl font-bold mb-3 text-charcoal font-cormorant line-clamp-2">
                           {post.title}
                         </h3>
                         <p className="text-charcoal/70 mb-4 line-clamp-3 text-sm">
@@ -154,7 +177,7 @@ export default function BlogPage() {
           {/* Newsletter Section */}
           <div className="mt-20 bg-gradient-to-br from-charcoal to-copper p-12 rounded-lg shadow-xl">
             <div className="max-w-2xl mx-auto text-center">
-              <h3 className="text-3xl font-bold text-white mb-4 font-sora">
+              <h3 className="text-3xl font-bold text-white mb-4 font-cormorant">
                 Stay Updated
               </h3>
               <p className="text-gray-200 mb-8">

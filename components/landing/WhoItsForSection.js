@@ -8,7 +8,7 @@ export default function WhoItsForSection() {
           <span className="text-copper font-bold uppercase tracking-widest text-xs">
             WHO THIS IS FOR
           </span>
-          <h2 className="text-4xl font-bold mt-2 font-sora">Built For Premium Hospitality</h2>
+          <h2 className="text-4xl font-bold mt-2 font-cormorant">Built For Premium Hospitality</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">

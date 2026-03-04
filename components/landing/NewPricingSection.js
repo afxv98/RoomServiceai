@@ -107,7 +107,7 @@ export default function NewPricingSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8 md:mb-12">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 font-sora text-white">Pricing That Scales With You</h1>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 font-cormorant text-white">Pricing That Scales With You</h1>
           <p className="text-base md:text-lg lg:text-xl text-gray-200 max-w-3xl mx-auto">
             From boutique inns to international hotel groups
           </p>
@@ -169,7 +169,7 @@ export default function NewPricingSection() {
           {/* Tier 1: Deluxe (Boutique) */}
           <div className={`bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-md border-2 ${numRooms <= 75 ? 'border-copper' : 'border-gray-200'}`}>
             <div className="text-center mb-4 md:mb-6">
-              <h3 className="text-xl md:text-2xl font-bold font-sora text-charcoal mb-2">Deluxe</h3>
+              <h3 className="text-xl md:text-2xl font-bold font-cormorant text-charcoal mb-2">Deluxe</h3>
               <p className="text-xs md:text-sm text-charcoal/70 mb-3 md:mb-4">Best for independent properties and luxury inns</p>
               <div className="text-xs md:text-sm text-copper font-bold mb-2">Up to 75 Rooms</div>
               <div className="text-3xl md:text-4xl font-bold text-charcoal font-sora">
@@ -214,7 +214,7 @@ export default function NewPricingSection() {
               Most Popular
             </div>
             <div className="text-center mb-4 md:mb-6 mt-2 md:mt-0">
-              <h3 className="text-xl md:text-2xl font-bold font-sora text-white mb-2">Signature</h3>
+              <h3 className="text-xl md:text-2xl font-bold font-cormorant text-white mb-2">Signature</h3>
               <p className="text-xs md:text-sm text-white/90 mb-3 md:mb-4">Best for full-service hotels and large resorts</p>
               <div className="text-xs md:text-sm text-white font-bold mb-2">76–500 Rooms</div>
               <div className="text-3xl md:text-4xl font-bold text-white font-sora">
@@ -261,7 +261,7 @@ export default function NewPricingSection() {
           {/* Tier 3: Global Enterprise */}
           <div className={`bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-md border-2 ${numRooms > 500 ? 'border-copper' : 'border-gray-200'}`}>
             <div className="text-center mb-4 md:mb-6">
-              <h3 className="text-xl md:text-2xl font-bold font-sora text-charcoal mb-2">Global Enterprise</h3>
+              <h3 className="text-xl md:text-2xl font-bold font-cormorant text-charcoal mb-2">Global Enterprise</h3>
               <p className="text-xs md:text-sm text-charcoal/70 mb-3 md:mb-4">Best for hotel groups and mega-resorts</p>
               <div className="text-xs md:text-sm text-copper font-bold mb-2">Multi-Property / 500+ Rooms</div>
               <div className="text-3xl md:text-4xl font-bold text-charcoal font-sora">Custom</div>
@@ -299,7 +299,7 @@ export default function NewPricingSection() {
 
         {/* Bottom CTA */}
         <div className="text-center bg-charcoal-darker text-white p-6 md:p-8 lg:p-12 rounded-lg">
-          <h2 className="text-2xl md:text-3xl font-bold font-sora mb-3 md:mb-4">Not sure which tier is right for you?</h2>
+          <h2 className="text-2xl md:text-3xl font-bold font-cormorant mb-3 md:mb-4">Not sure which tier is right for you?</h2>
           <p className="text-sm md:text-base text-white/70 mb-4 md:mb-6 max-w-2xl mx-auto">
             Our team can walk you through your specific requirements and recommend the best fit for your property.
           </p>

@@ -58,7 +58,7 @@ export default function CoreFeaturesSection() {
         >
           <span className="font-mono text-xs uppercase tracking-[0.12em] text-copper mb-4 block">CAPABILITIES</span>
           <h2
-            className="font-sora font-bold text-charcoal leading-tight tracking-tight max-w-2xl"
+            className="font-cormorant font-bold text-charcoal leading-tight tracking-tight max-w-2xl"
             style={{ fontSize: 'clamp(28px, 3.2vw, 48px)' }}
           >
             Everything you need to run room service—smarter.
@@ -84,7 +84,7 @@ export default function CoreFeaturesSection() {
                 <div className="w-14 h-14 rounded-xl bg-copper/10 border border-copper/30 flex items-center justify-center mb-6">
                   <Icon size={26} className="text-copper" />
                 </div>
-                <h3 className="font-sora font-semibold text-charcoal text-xl mb-4">
+                <h3 className="font-cormorant font-semibold text-charcoal text-xl mb-4">
                   {feature.title}
                 </h3>
                 <p className="text-charcoal/70 leading-relaxed">

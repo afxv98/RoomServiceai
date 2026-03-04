@@ -92,7 +92,7 @@ export default function PricingSection() {
           <span className="text-copper font-bold uppercase tracking-widest text-xs">
             PRICING
           </span>
-          <h2 className="text-4xl font-bold mt-2 mb-4 font-sora">Enterprise Room-Based Licensing</h2>
+          <h2 className="text-4xl font-bold mt-2 mb-4 font-cormorant">Enterprise Room-Based Licensing</h2>
           <p className="text-lg text-charcoal/70 mb-2">
             Annual contracts · No surprise usage bills
           </p>
@@ -119,7 +119,7 @@ export default function PricingSection() {
 
               <div className="mb-6">
                 <span className="text-xs font-bold text-copper uppercase tracking-widest">{tier.tier}</span>
-                <h3 className="text-xl font-bold mb-2 font-sora">{tier.name}</h3>
+                <h3 className="text-xl font-bold mb-2 font-cormorant">{tier.name}</h3>
                 <p className="text-sm text-charcoal/70 mb-4">{tier.rooms}</p>
                 <div className="flex items-baseline">
                   <span className="text-4xl font-bold text-charcoal">{tier.price}</span>

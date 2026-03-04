@@ -29,9 +29,9 @@ export default function RootLayout({ children }) {
       style={{
         '--font-cormorant': '"Cormorant Garamond", Georgia, serif',
         '--font-playfair': '"Cormorant Garamond", Georgia, serif',
-        '--font-montserrat': '"Cormorant Garamond", Georgia, serif',
-        '--font-inter': '"Cormorant Garamond", Georgia, serif',
-        '--font-outfit': '"Cormorant Garamond", Georgia, serif',
+        '--font-inter': 'Inter, sans-serif',
+        '--font-montserrat': 'Montserrat, sans-serif',
+        '--font-outfit': 'Outfit, sans-serif',
       }}
     >
       <body>

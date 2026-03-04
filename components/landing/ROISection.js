@@ -3,7 +3,7 @@ export default function ROISection() {
     <section id="roi" className="py-24 bg-offwhite">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 font-sora">The Financial Impact</h2>
+          <h2 className="text-4xl font-bold mb-4 font-cormorant">The Financial Impact</h2>
           <p className="text-lg text-charcoal/70">We don't cost money. We replace cost.</p>
         </div>
 

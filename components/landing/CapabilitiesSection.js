@@ -8,7 +8,7 @@ export default function CapabilitiesSection() {
           <span className="text-copper font-bold uppercase tracking-widest text-xs">
             Beyond Human Capability
           </span>
-          <h2 className="text-4xl font-bold mt-2 mb-4 font-sora">The 5-Star Standard</h2>
+          <h2 className="text-4xl font-bold mt-2 mb-4 font-cormorant">The 5-Star Standard</h2>
           <p className="text-lg text-charcoal/70">
             Eliminate the errors that cost you money and reputation.
           </p>

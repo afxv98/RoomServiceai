@@ -105,7 +105,7 @@ export default function ContactFormSection() {
           <span className="text-copper font-bold uppercase tracking-widest text-xs">
             BOOK YOUR PILOT
           </span>
-          <h2 className="text-4xl font-bold mt-2 mb-4 font-sora">
+          <h2 className="text-4xl font-bold mt-2 mb-4 font-cormorant">
             Ready to Fix Room Service?
           </h2>
           <p className="text-lg text-charcoal/70 max-w-2xl mx-auto">

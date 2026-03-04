@@ -7,6 +7,15 @@ import Footer from '@/components/landing/Footer';
 import { Clock, User, ArrowLeft, Calendar } from 'lucide-react';
 import Link from 'next/link';
 
+// Convert Google Drive share URLs to direct-embed URLs
+function toDirectImageUrl(url) {
+  if (!url) return url;
+  // https://drive.google.com/file/d/FILE_ID/view?...
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if (driveMatch) return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+  return url;
+}
+
 export default function BlogPostPage() {
   const params = useParams();
   const router = useRouter();
@@ -14,7 +23,7 @@ export default function BlogPostPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/blogs?published=true&slug=${encodeURIComponent(params.slug)}`)
+    fetch(`/api/blogs?slug=${encodeURIComponent(params.slug)}`)
       .then((r) => r.json())
       .then((data) => setPost(data ?? null))
       .catch(() => setPost(null))
@@ -42,12 +51,13 @@ export default function BlogPostPage() {
         <Navbar />
         <div className="pt-32 pb-24 bg-offwhite">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl font-bold text-charcoal mb-6 font-sora">
+            <h1 className="text-4xl font-bold text-charcoal mb-6 font-cormorant">
               Blog Post Not Found
             </h1>
-            <p className="text-charcoal/70 mb-8">
+            <p className="text-charcoal/70 mb-2">
               The blog post you're looking for doesn't exist or has been removed.
             </p>
+            <p className="text-sm text-charcoal/40 mb-8 font-mono">slug: "{params.slug}"</p>
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 px-6 py-3 bg-copper text-white rounded-lg font-semibold hover:bg-copper-hover transition-colors"
@@ -81,7 +91,7 @@ export default function BlogPostPage() {
             {post.category}
           </span>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 font-sora">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 font-cormorant">
             {post.title}
           </h1>
 
@@ -114,9 +124,11 @@ export default function BlogPostPage() {
               {/* Article Image */}
               {post.image && (
                 <div className="mb-8 -mx-8 md:-mx-12 -mt-8 md:-mt-12">
-                  <div className="bg-gradient-to-br from-gray-100 to-gray-200 h-96 flex items-center justify-center">
-                    <div className="text-gray-400 text-6xl">📰</div>
-                  </div>
+                  <img
+                    src={toDirectImageUrl(post.image)}
+                    alt={post.title}
+                    className="w-full h-96 object-cover"
+                  />
                 </div>
               )}
 

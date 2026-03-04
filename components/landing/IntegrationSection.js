@@ -12,7 +12,7 @@ export default function IntegrationSection() {
         <div className="flex flex-col md:flex-row gap-16 items-center">
           <ScrollAnimation animation="fade-right" duration={600} className="md:w-1/2">
             <div>
-            <h2 className="text-4xl font-bold mb-6 font-sora">
+            <h2 className="text-4xl font-bold mb-6 font-cormorant">
               Your POS, <span className="text-copper">Supercharged</span>
             </h2>
             <p className="text-gray-400 mb-8 text-lg">
