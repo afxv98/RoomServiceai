@@ -7,6 +7,9 @@ export const metadata = {
   title: 'RoomService AI | Autonomous Room Service & Guest Ordering',
   description: 'Autonomous room-service ordering for hotels. Capture every call, reduce errors, prevent chargebacks, and turn in-room dining into a reliable revenue stream — without adding staff.',
   manifest: '/manifest.json',
+  alternates: {
+    canonical: 'https://roomserviceai.com',
+  },
   openGraph: {
     title: 'RoomService AI | Autonomous Room Service & Guest Ordering',
     description: 'Autonomous room-service ordering for hotels. Capture every call, reduce errors, prevent chargebacks, and turn in-room dining into a reliable revenue stream — without adding staff.',
