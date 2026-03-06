@@ -7,170 +7,146 @@ export default function PrivacyPolicyPage() {
       <Navbar />
       <div className="pt-32 pb-24 bg-offwhite">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold mb-4 font-sora">Privacy Policy – Global</h1>
-          <p className="text-charcoal/70 mb-12">Last updated: January 2026</p>
+          <h1 className="text-5xl font-bold mb-4 font-sora">Privacy Policy</h1>
+          <p className="text-charcoal/70 mb-2">Last Updated: March 3, 2026</p>
+          <p className="text-charcoal/70 mb-12">Entity: RoomService AI Inc. (Delaware, USA)</p>
 
           <div className="prose prose-lg max-w-none">
-            <p className="text-lg text-charcoal/80 mb-8">
-              This Privacy Policy explains how personal data is collected, used, stored, and processed by RoomService AI and its affiliated entities worldwide. We are committed to protecting privacy and processing personal data in accordance with applicable data protection laws, including the EU General Data Protection Regulation (GDPR), UK GDPR, and relevant U.S. and international privacy regulations.
-            </p>
-            <p className="text-lg text-charcoal/80 mb-12">
-              This Privacy Policy applies to all users of the RoomService AI website, platform, and related services ("Services").
+
+            <hr className="my-12" />
+
+            <h2 className="text-3xl font-bold mb-4 font-sora">1. Introduction</h2>
+            <p className="text-charcoal/80 mb-8">
+              RoomService AI Inc. ("we," "us," or "our") provides AI-driven guest service solutions via{' '}
+              <a href="https://www.roomserviceai.com" className="text-copper hover:underline">www.roomserviceai.com</a>.
+              This Privacy Policy explains how we collect, use, and protect your information globally.
+              By using our website or opting into our SMS services, you agree to these practices.
             </p>
 
             <hr className="my-12" />
 
-            <h2 className="text-3xl font-bold mb-4 font-sora">1. WHO WE ARE (DATA CONTROLLER INFORMATION)</h2>
+            <h2 className="text-3xl font-bold mb-4 font-sora">2. Information We Collect</h2>
+            <ul className="list-disc pl-6 mb-8 space-y-2 text-charcoal/80">
+              <li>
+                <strong>Direct Information:</strong> Name, email, and phone number when you request
+                info or a demo.
+              </li>
+              <li>
+                <strong>Automated Information:</strong> IP address, browser type, and usage data
+                collected via cookies.
+              </li>
+              <li>
+                <strong>SMS Consent Data:</strong> We track the time, date, and source (IP) of your
+                opt-in to comply with international "Proof of Consent" requirements.
+              </li>
+            </ul>
+
+            <hr className="my-12" />
+
+            <h2 className="text-3xl font-bold mb-4 font-sora">3. SMS & Mobile Communications (A2P 10DLC Compliance)</h2>
             <p className="text-charcoal/80 mb-4">
-              <strong>Data Controller:</strong><br />
-              RoomService AI IP Ltd<br />
-              Registered in Ireland
+              We use SMS to provide requested information and follow-up support.
             </p>
-            <p className="text-charcoal/80 mb-6">
-              <strong>Commercial Operations & Data Processing Entity:</strong><br />
-              RoomService AI Inc<br />
-              Registered in Delaware, United States
-            </p>
-            <p className="text-charcoal/80 mb-8">
-              For the purposes of applicable data protection laws, RoomService AI IP Ltd acts as the primary Data Controller, and RoomService AI Inc acts as a Data Processor and commercial operating entity.
-            </p>
-
-            <hr className="my-12" />
-
-            <h2 className="text-3xl font-bold mb-4 font-sora">2. PERSONAL DATA WE COLLECT</h2>
-            <p className="text-charcoal/80 mb-4">We may collect the following categories of personal data:</p>
-            <ul className="list-disc pl-6 mb-8 space-y-2 text-charcoal/80">
-              <li>Contact information (name, email address, phone number)</li>
-              <li>Business information (company name, job title, hotel or organisation details)</li>
-              <li>Account and authentication information</li>
-              <li>Communication data (messages, emails, call records where applicable)</li>
-              <li>Usage and technical data (IP address, browser type, device information, log data)</li>
-              <li>Transactional and billing data (where payments are applicable)</li>
-              <li>Cookie and analytics data (see Cookie Policy)</li>
-            </ul>
-            <p className="text-charcoal/80 mb-8">We do not knowingly collect personal data from children.</p>
-
-            <hr className="my-12" />
-
-            <h2 className="text-3xl font-bold mb-4 font-sora">3. HOW WE USE PERSONAL DATA</h2>
-            <p className="text-charcoal/80 mb-4">We process personal data for the following purposes:</p>
-            <ul className="list-disc pl-6 mb-8 space-y-2 text-charcoal/80">
-              <li>Providing and operating the Services</li>
-              <li>Managing customer accounts and relationships</li>
-              <li>Processing transactions and payments</li>
-              <li>Providing customer support and communications</li>
-              <li>Improving platform performance and user experience</li>
-              <li>Analytics, security monitoring, and fraud prevention</li>
-              <li>Compliance with legal and regulatory obligations</li>
+            <ul className="list-disc pl-6 mb-6 space-y-3 text-charcoal/80">
+              <li>
+                <strong>Consent:</strong> Mobile consent is obtained via an explicit, unchecked
+                checkbox on our web forms.
+              </li>
+              <li>
+                <strong>No Sharing:</strong> Mobile information will not be shared with third
+                parties/affiliates for marketing/promotional purposes. All the above categories
+                exclude text messaging originator opt-in data and consent; this information will not
+                be shared with any third parties.
+              </li>
+              <li>
+                <strong>Rates & Frequency:</strong> Message frequency varies. Message and data rates
+                may apply.
+              </li>
+              <li>
+                <strong>Control:</strong> Reply <strong>STOP</strong> to opt-out at any time. Reply{' '}
+                <strong>HELP</strong> for assistance.
+              </li>
             </ul>
 
             <hr className="my-12" />
 
-            <h2 className="text-3xl font-bold mb-4 font-sora">4. LEGAL BASIS FOR PROCESSING (GDPR / UK GDPR)</h2>
-            <p className="text-charcoal/80 mb-4">Where GDPR or UK GDPR applies, we rely on the following lawful bases:</p>
-            <ul className="list-disc pl-6 mb-8 space-y-2 text-charcoal/80">
-              <li>Performance of a contract</li>
-              <li>Legitimate business interests</li>
-              <li>Compliance with legal obligations</li>
-              <li>User consent (where required)</li>
+            <h2 className="text-3xl font-bold mb-4 font-sora">4. International Data Transfers (EU/UK/Global)</h2>
+            <p className="text-charcoal/80 mb-4">
+              As a US-based Delaware corporation, we process data in the United States.
+            </p>
+            <ul className="list-disc pl-6 mb-8 space-y-3 text-charcoal/80">
+              <li>
+                <strong>Safeguards:</strong> For users in the EU and UK, we process data based on
+                Standard Contractual Clauses (SCCs) or the EU-U.S. Data Privacy Framework.
+              </li>
+              <li>
+                <strong>Lawful Basis:</strong> For EU/UK/Singapore/South Africa, our lawful basis
+                for SMS and email marketing is Explicit Consent. For service-related communication,
+                it is Legitimate Interest or Contractual Necessity.
+              </li>
             </ul>
-            <p className="text-charcoal/80 mb-8">Users may withdraw consent at any time where processing is based on consent.</p>
 
             <hr className="my-12" />
 
-            <h2 className="text-3xl font-bold mb-4 font-sora">5. DATA SHARING AND DISCLOSURE</h2>
-            <p className="text-charcoal/80 mb-4">We may share personal data with:</p>
-            <ul className="list-disc pl-6 mb-8 space-y-2 text-charcoal/80">
-              <li>Service providers and subprocessors (e.g. hosting, analytics, payments)</li>
-              <li>Professional advisors (legal, accounting, compliance)</li>
-              <li>Authorities or regulators where legally required</li>
-              <li>Successor entities in the event of a merger, acquisition, or sale of assets</li>
+            <h2 className="text-3xl font-bold mb-4 font-sora">5. Region-Specific Rights</h2>
+            <p className="text-charcoal/80 mb-4">
+              Depending on your location, you have specific rights regarding your data:
+            </p>
+            <ul className="list-disc pl-6 mb-8 space-y-3 text-charcoal/80">
+              <li>
+                <strong>EU (GDPR) & UK (DPA 2018):</strong> You have the right to access, rectify,
+                or erase your data ("Right to be Forgotten"), and the right to data portability.
+              </li>
+              <li>
+                <strong>California (CCPA/CPRA):</strong> You have the right to know what data is
+                collected and to opt-out of the "sale" of data. Note: We do not sell your personal
+                data.
+              </li>
+              <li>
+                <strong>South Africa (POPIA):</strong> We maintain data only for specified, lawful
+                purposes. You may object to processing at any time.
+              </li>
+              <li>
+                <strong>Singapore (PDPA):</strong> We honor Do Not Call (DNC) registry requirements
+                and process opt-outs within 10 business days.
+              </li>
             </ul>
-            <p className="text-charcoal/80 mb-8">We do not sell personal data.</p>
 
             <hr className="my-12" />
 
-            <h2 className="text-3xl font-bold mb-4 font-sora">6. INTERNATIONAL DATA TRANSFERS</h2>
-            <p className="text-charcoal/80 mb-6">
-              Personal data may be processed and stored outside the user's country of residence, including in the United States and the European Union.
-            </p>
+            <h2 className="text-3xl font-bold mb-4 font-sora">6. Data Retention</h2>
             <p className="text-charcoal/80 mb-8">
-              Where required, appropriate safeguards are implemented to ensure lawful cross-border data transfers, including standard contractual clauses or equivalent mechanisms.
+              We retain your personal data only as long as necessary to fulfill the purposes for
+              which it was collected (e.g., as long as you are a client or active lead). SMS opt-in
+              records are kept for the duration of the communication plus 4 years to defend against
+              potential regulatory inquiries.
             </p>
 
             <hr className="my-12" />
 
-            <h2 className="text-3xl font-bold mb-4 font-sora">7. DATA RETENTION</h2>
+            <h2 className="text-3xl font-bold mb-4 font-sora">7. Security</h2>
             <p className="text-charcoal/80 mb-8">
-              We retain personal data only for as long as necessary to fulfill the purposes described in this Privacy Policy, unless a longer retention period is required or permitted by law.
+              We implement industry-standard encryption (SSL/TLS) for data in transit and at rest.
+              Access to personal data is restricted to authorized employees on a "need-to-know" basis.
             </p>
 
             <hr className="my-12" />
 
-            <h2 className="text-3xl font-bold mb-4 font-sora">8. DATA SECURITY</h2>
-            <p className="text-charcoal/80 mb-6">
-              We implement appropriate technical and organisational measures designed to protect personal data against unauthorised access, loss, misuse, alteration, or disclosure.
+            <h2 className="text-3xl font-bold mb-4 font-sora">8. Contact & Redress</h2>
+            <p className="text-charcoal/80 mb-4">
+              If you have questions or wish to exercise your rights, please contact:
             </p>
-            <p className="text-charcoal/80 mb-8">
-              No system can be guaranteed to be 100% secure, but we continuously review and enhance our security practices.
-            </p>
-
-            <hr className="my-12" />
-
-            <h2 className="text-3xl font-bold mb-4 font-sora">9. USER RIGHTS</h2>
-            <p className="text-charcoal/80 mb-4">Depending on your location, you may have the right to:</p>
-            <ul className="list-disc pl-6 mb-8 space-y-2 text-charcoal/80">
-              <li>Access your personal data</li>
-              <li>Request correction of inaccurate data</li>
-              <li>Request deletion of personal data</li>
-              <li>Object to or restrict processing</li>
-              <li>Request data portability</li>
-              <li>Withdraw consent at any time</li>
-            </ul>
-            <p className="text-charcoal/80 mb-8">Requests may be submitted using the contact details below.</p>
-
-            <hr className="my-12" />
-
-            <h2 className="text-3xl font-bold mb-4 font-sora">10. COOKIES AND TRACKING TECHNOLOGIES</h2>
-            <p className="text-charcoal/80 mb-6">
-              We use cookies and similar technologies to operate and improve our Services.
-            </p>
-            <p className="text-charcoal/80 mb-8">
-              For detailed information, please refer to our Cookie Policy and manage your preferences through the Cookie Settings tool available on our website.
+            <address className="not-italic text-charcoal/80 mb-2">
+              <strong>Privacy Officer</strong><br />
+              RoomService AI Inc.<br />
+              Delaware, USA
+            </address>
+            <p className="text-lg font-bold text-copper mt-4">
+              <a href="mailto:privacy@roomserviceai.com" className="hover:underline">
+                privacy@roomserviceai.com
+              </a>
             </p>
 
-            <hr className="my-12" />
-
-            <h2 className="text-3xl font-bold mb-4 font-sora">11. U.S. PRIVACY RIGHTS (CALIFORNIA)</h2>
-            <p className="text-charcoal/80 mb-6">
-              California residents may have additional rights under the California Consumer Privacy Act (CCPA/CPRA), including the right to know, delete, or limit certain uses of personal data.
-            </p>
-            <p className="text-charcoal/80 mb-8">
-              Note: RoomService AI does not sell personal data.
-            </p>
-
-            <hr className="my-12" />
-
-            <h2 className="text-3xl font-bold mb-4 font-sora">12. MENA AND INTERNATIONAL USERS</h2>
-            <p className="text-charcoal/80 mb-8">
-              For users located in the Middle East and other international regions, personal data is processed in accordance with applicable local privacy laws and GDPR-aligned principles.
-            </p>
-
-            <hr className="my-12" />
-
-            <h2 className="text-3xl font-bold mb-4 font-sora">13. CHANGES TO THIS PRIVACY POLICY</h2>
-            <p className="text-charcoal/80 mb-6">
-              We may update this Privacy Policy from time to time. Updates will be posted on this page with a revised "Last updated" date.
-            </p>
-            <p className="text-charcoal/80 mb-8">
-              Continued use of the Services constitutes acceptance of the updated Privacy Policy.
-            </p>
-
-            <hr className="my-12" />
-
-            <h2 className="text-3xl font-bold mb-4 font-sora">14. CONTACT INFORMATION</h2>
-            <p className="text-charcoal/80 mb-4">For privacy-related questions or requests, please contact:</p>
-            <p className="text-lg font-bold text-copper">privacy@roomserviceai.com</p>
           </div>
         </div>
       </div>
