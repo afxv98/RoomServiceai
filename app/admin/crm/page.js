@@ -371,14 +371,31 @@ export default function CRMPage() {
 
   const parseCsv = (text) => {
     const lines = text.trim().split(/\r?\n/);
-    if (lines.length < 2) return { rows: [], errors: ['CSV must have a header row and at least one data row.'] };
+    if (lines.length < 2) return { rows: [], errors: ['File must have a header row and at least one data row. Download the template to see the correct format.'] };
 
-    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
-    const fieldKeys = headers.map(h => CSV_FIELD_MAP[h] || null);
-
-    const rows = [];
+    const rawHeaders = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+    const fieldKeys = rawHeaders.map(h => CSV_FIELD_MAP[h.toLowerCase()] || null);
+    const mappedFields = new Set(fieldKeys.filter(Boolean));
     const errors = [];
 
+    // Header-level: check required columns exist at all
+    const missingCols = [];
+    if (!mappedFields.has('hotelName')) missingCols.push('"hotelName" (accepted headers: hotelName, hotel, hotel name, property)');
+    if (!mappedFields.has('contactName')) missingCols.push('"contactName" (accepted headers: contactName, contact name, contact, name)');
+    if (missingCols.length) {
+      errors.push(`Missing required column${missingCols.length > 1 ? 's' : ''}: ${missingCols.join(' and ')}.`);
+      errors.push(`Your file has these columns: ${rawHeaders.join(', ')}`);
+      errors.push('Tip: Download the template to get the exact column names expected.');
+      return { rows: [], errors };
+    }
+
+    // Warn about unrecognized columns (non-fatal)
+    const unrecognized = rawHeaders.filter((_, i) => !fieldKeys[i]);
+    if (unrecognized.length) {
+      errors.push(`Note: ${unrecognized.length} unrecognized column${unrecognized.length > 1 ? 's were' : ' was'} ignored: ${unrecognized.join(', ')}`);
+    }
+
+    const rows = [];
     lines.slice(1).forEach((line, i) => {
       if (!line.trim()) return;
       const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
@@ -386,10 +403,10 @@ export default function CRMPage() {
       fieldKeys.forEach((key, j) => { if (key) row[key] = values[j] ?? ''; });
 
       const rowErrors = [];
-      if (!row.hotelName) rowErrors.push('Hotel Name required');
-      if (!row.contactName) rowErrors.push('Contact Name required');
+      if (!row.hotelName?.trim()) rowErrors.push('"hotelName" is empty');
+      if (!row.contactName?.trim()) rowErrors.push('"contactName" is empty');
       if (rowErrors.length) {
-        errors.push(`Row ${i + 2}: ${rowErrors.join(', ')}`);
+        errors.push(`Row ${i + 2} skipped — missing required field${rowErrors.length > 1 ? 's' : ''}: ${rowErrors.join(' and ')}`);
       } else {
         rows.push(row);
       }
@@ -1181,12 +1198,14 @@ export default function CRMPage() {
 
             {/* Errors */}
             {csvErrors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-sm p-4 mb-4">
+              <div className={`border rounded-sm p-4 mb-4 ${csvRows.length === 0 ? 'bg-red-50 border-red-200' : 'bg-amber-50 border-amber-200'}`}>
                 <div className="flex items-center gap-2 mb-2">
-                  <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
-                  <p className="text-sm font-medium text-red-700">{csvErrors.length} row{csvErrors.length !== 1 ? 's' : ''} skipped</p>
+                  <AlertCircle className={`w-4 h-4 flex-shrink-0 ${csvRows.length === 0 ? 'text-red-600' : 'text-amber-600'}`} />
+                  <p className={`text-sm font-medium ${csvRows.length === 0 ? 'text-red-700' : 'text-amber-700'}`}>
+                    {csvRows.length === 0 ? 'File could not be imported — see errors below' : `${csvErrors.filter(e => e.startsWith('Row')).length} row${csvErrors.filter(e => e.startsWith('Row')).length !== 1 ? 's' : ''} skipped`}
+                  </p>
                 </div>
-                <ul className="text-xs text-red-600 space-y-0.5 list-disc list-inside">
+                <ul className={`text-xs space-y-1 list-disc list-inside ${csvRows.length === 0 ? 'text-red-600' : 'text-amber-700'}`}>
                   {csvErrors.map((e, i) => <li key={i}>{e}</li>)}
                 </ul>
               </div>
