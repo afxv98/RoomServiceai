@@ -9,9 +9,13 @@ export async function GET(request) {
   const isSales = state === 'sales';
 
   const base = new URL(request.url).origin;
-  const errorRedirect = isSales ? `${base}/sales/email?gmail_error=auth_denied` : `${base}/admin/email?gmail_error=auth_denied`;
 
   if (error || !code) {
+    // Pass through the specific Google error type so the UI can explain it
+    const errorType = error === 'access_denied' ? 'access_denied' : 'auth_denied';
+    const errorRedirect = isSales
+      ? `${base}/sales/email?gmail_error=${errorType}`
+      : `${base}/admin/email?gmail_error=${errorType}`;
     return NextResponse.redirect(errorRedirect);
   }
 

@@ -110,6 +110,7 @@ function FileChip({ file, onRemove }) {
 
 function ConnectBanner({ error }) {
   const msgs = {
+    access_denied: 'Your Google account is not authorized to connect. The app is in restricted mode — only approved accounts can link Gmail. Contact tech@roomserviceai.com to get your email added as an authorized user.',
     auth_denied: 'Authorization was denied. Please try again.',
     no_refresh_token: 'Could not get a refresh token. Please revoke access in your Google account security settings and try again.',
     auth_failed: 'Authentication failed. Please try again.',
