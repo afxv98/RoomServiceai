@@ -1,10 +1,9 @@
 export default function sitemap() {
   const baseUrl = 'https://roomserviceai.com';
-
-  // Get current date for lastModified
   const currentDate = new Date().toISOString();
 
   return [
+    // ── Core marketing pages ─────────────────────────────────────────────
     {
       url: baseUrl,
       lastModified: currentDate,
@@ -12,28 +11,30 @@ export default function sitemap() {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/about`,
+      url: `${baseUrl}/pricing`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/demo`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/contact`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+
+    // ── Product / feature pages ──────────────────────────────────────────
     {
       url: `${baseUrl}/capabilities`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/integration-partners`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/revenue-protection`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
     },
     {
       url: `${baseUrl}/roi`,
@@ -42,10 +43,84 @@ export default function sitemap() {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/pricing`,
+      url: `${baseUrl}/revenue-protection`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/integration-partners`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/implementation`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/value-proposition`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/who-its-for`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+
+    // ── Company pages ────────────────────────────────────────────────────
+    {
+      url: `${baseUrl}/about`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+
+    // ── Blog ─────────────────────────────────────────────────────────────
+    {
+      url: `${baseUrl}/blog`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
-      priority: 0.9,
+      priority: 0.7,
+    },
+
+    // ── Auth ─────────────────────────────────────────────────────────────
+    {
+      url: `${baseUrl}/login`,
+      lastModified: currentDate,
+      changeFrequency: 'yearly',
+      priority: 0.4,
+    },
+
+    // ── Legal / policy pages ─────────────────────────────────────────────
+    {
+      url: `${baseUrl}/privacy-policy`,
+      lastModified: currentDate,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/terms-of-service`,
+      lastModified: currentDate,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/cookie-policy`,
+      lastModified: currentDate,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/cookie-preferences`,
+      lastModified: currentDate,
+      changeFrequency: 'yearly',
+      priority: 0.3,
     },
   ];
 }
