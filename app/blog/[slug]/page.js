@@ -10,9 +10,8 @@ import Link from 'next/link';
 // Convert Google Drive share URLs to direct-embed URLs
 function toDirectImageUrl(url) {
   if (!url) return url;
-  // https://drive.google.com/file/d/FILE_ID/view?...
-  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-  if (driveMatch) return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/?]+)/);
+  if (driveMatch) return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
   return url;
 }
 
