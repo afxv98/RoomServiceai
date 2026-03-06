@@ -61,6 +61,11 @@ export default function SalesCRMPage() {
   const [showDemoModal, setShowDemoModal] = useState(false);
   const [demoForm, setDemoForm] = useState({ date: '', time: '' });
 
+  // Delete request modal
+  const [showDeleteRequestModal, setShowDeleteRequestModal] = useState(false);
+  const [deleteReason, setDeleteReason] = useState('');
+  const [deleteRequestSubmitting, setDeleteRequestSubmitting] = useState(false);
+
   // New lead / CSV modals
   const [showNewLeadModal, setShowNewLeadModal] = useState(false);
   const [showCsvModal, setShowCsvModal] = useState(false);
@@ -220,6 +225,29 @@ export default function SalesCRMPage() {
     setEditMode(false);
     fetchLeads();
     showToast('Lead updated');
+  };
+
+  // ── Delete Request ────────────────────────────────────────────────────────
+  const handleSubmitDeleteRequest = async () => {
+    if (!selectedLead || !rep) return;
+    setDeleteRequestSubmitting(true);
+    try {
+      const res = await fetch(`/api/crm/leads/${selectedLead.id}/delete-request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestedBy: rep.name, reason: deleteReason }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to submit');
+      showToast('Deletion request sent to admin for approval', 'success');
+      setShowDeleteRequestModal(false);
+      setDeleteReason('');
+      fetchLeads();
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      setDeleteRequestSubmitting(false);
+    }
   };
 
   // ── New Lead ──────────────────────────────────────────────────────────────
@@ -550,13 +578,28 @@ export default function SalesCRMPage() {
                 </div>
                 <div className="flex items-center gap-2 ml-3">
                   {!editMode ? (
-                    <button onClick={() => { setEditMode(true); setEditForm({ ...selectedLead }); }} className="p-2 rounded-sm hover:bg-gray-100 text-gray-500">
+                    <button onClick={() => { setEditMode(true); setEditForm({ ...selectedLead }); }} className="p-2 rounded-sm hover:bg-gray-100 text-gray-500" title="Edit lead">
                       <Edit className="w-4 h-4" />
                     </button>
                   ) : (
                     <button onClick={handleSaveEdit} className="p-2 rounded-sm hover:bg-green-50 text-green-600">
                       <Save className="w-4 h-4" />
                     </button>
+                  )}
+                  {!editMode && (
+                    selectedLead.deleteRequests?.length > 0 ? (
+                      <span className="flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded-sm font-medium">
+                        <Clock className="w-3 h-3" /> Deletion Pending
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => setShowDeleteRequestModal(true)}
+                        className="p-2 rounded-sm hover:bg-red-50 text-red-400 hover:text-red-600 transition-colors"
+                        title="Request lead deletion"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )
                   )}
                   <button onClick={() => { setSelectedLead(null); setEditMode(false); }} className="p-2 rounded-sm hover:bg-gray-100 text-gray-500">
                     <X className="w-4 h-4" />
@@ -837,6 +880,54 @@ export default function SalesCRMPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </>
+      )}
+
+      {/* Delete Request Modal */}
+      {showDeleteRequestModal && selectedLead && (
+        <>
+          <div className="fixed inset-0 bg-black/50 z-[60]" onClick={() => { setShowDeleteRequestModal(false); setDeleteReason(''); }} />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-sm shadow-2xl z-[70] p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <Trash2 className="w-5 h-5 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-charcoal">Request Lead Deletion</h3>
+                <p className="text-sm text-gray-500">{selectedLead.hotelName}</p>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              This will send a deletion request to the admin for approval. The lead will <strong>not</strong> be deleted until an admin approves it.
+            </p>
+            <div className="mb-5">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Reason <span className="text-gray-400 font-normal">(optional)</span>
+              </label>
+              <textarea
+                rows={3}
+                value={deleteReason}
+                onChange={e => setDeleteReason(e.target.value)}
+                placeholder="e.g. Duplicate entry, hotel closed, wrong contact..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-copper resize-none"
+              />
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => { setShowDeleteRequestModal(false); setDeleteReason(''); }}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-sm font-medium hover:bg-gray-50 text-sm"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmitDeleteRequest}
+                disabled={deleteRequestSubmitting}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50 text-sm"
+              >
+                {deleteRequestSubmitting ? 'Submitting…' : 'Send Request'}
+              </button>
+            </div>
           </div>
         </>
       )}

@@ -20,6 +20,10 @@ export async function GET() {
       include: {
         activities: { orderBy: { timestamp: 'asc' } },
         notes: { orderBy: { timestamp: 'asc' } },
+        deleteRequests: {
+          where: { status: 'pending' },
+          select: { id: true, status: true, reason: true, createdAt: true },
+        },
       },
       orderBy: { updatedAt: 'desc' },
     });

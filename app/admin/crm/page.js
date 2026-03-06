@@ -65,6 +65,10 @@ export default function CRMPage() {
   const [csvErrors, setCsvErrors] = useState([]);
   const [csvImporting, setCsvImporting] = useState(false);
 
+  // Delete request approvals
+  const [deleteRequests, setDeleteRequests] = useState([]);
+  const [showDeleteRequestsPanel, setShowDeleteRequestsPanel] = useState(false);
+
   // Search / filter / view
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -90,9 +94,18 @@ export default function CRMPage() {
     }
   }, []);
 
+  const fetchDeleteRequests = useCallback(async () => {
+    try {
+      const res = await fetch('/api/crm/delete-requests?status=pending');
+      if (!res.ok) return;
+      setDeleteRequests(await res.json());
+    } catch { /* silent */ }
+  }, []);
+
   useEffect(() => {
     fetchLeads();
-  }, [fetchLeads]);
+    fetchDeleteRequests();
+  }, [fetchLeads, fetchDeleteRequests]);
 
   const columns = [
     { id: 'lead', label: 'Lead' },
@@ -316,6 +329,39 @@ export default function CRMPage() {
     }
   };
 
+  // Delete Request Approval Handlers
+  const handleDeleteRequestAction = async (requestId, action, leadName) => {
+    const label = action === 'approve' ? 'approve and permanently delete' : 'deny';
+    const confirmed = await confirm({
+      title: action === 'approve' ? 'Approve Deletion' : 'Deny Deletion',
+      message: action === 'approve'
+        ? `This will permanently delete "${leadName}" and all its data. This cannot be undone.`
+        : `Deny the deletion request for "${leadName}"? The lead will remain in the CRM.`,
+      confirmText: action === 'approve' ? 'Yes, Delete' : 'Deny Request',
+      cancelText: 'Cancel',
+      variant: action === 'approve' ? 'danger' : 'default',
+    });
+    if (!confirmed) return;
+
+    const res = await fetch(`/api/crm/delete-requests/${requestId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action }),
+    });
+    if (res.ok) {
+      if (action === 'approve') {
+        toast.success(`${leadName} has been deleted`);
+        if (selectedLead?.hotelName === leadName) setSelectedLead(null);
+        fetchLeads();
+      } else {
+        toast.success(`Deletion request for ${leadName} denied`);
+      }
+      fetchDeleteRequests();
+    } else {
+      toast.error('Failed to process request');
+    }
+  };
+
   // Edit Lead Handlers
   const handleEnterEditMode = () => {
     setEditForm({
@@ -515,6 +561,20 @@ export default function CRMPage() {
           <p className="text-gray-600">Manage hotel leads, conversations, and deal progress — all in one place.</p>
         </div>
         <div className="flex items-center gap-2">
+          {/* Delete Requests Badge */}
+          <button
+            onClick={() => setShowDeleteRequestsPanel(true)}
+            className="relative flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-sm font-medium hover:bg-gray-50 transition-colors"
+            title="Pending deletion requests"
+          >
+            <Trash2 className="w-4 h-4" />
+            Deletion Requests
+            {deleteRequests.length > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                {deleteRequests.length}
+              </span>
+            )}
+          </button>
           <button
             onClick={() => setShowCsvModal(true)}
             className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-sm font-medium hover:bg-gray-50 transition-colors"
@@ -1151,6 +1211,76 @@ export default function CRMPage() {
               >
                 Send SMS
               </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Delete Requests Approval Panel */}
+      {showDeleteRequestsPanel && (
+        <>
+          <div className="fixed inset-0 bg-black/50 z-[60]" onClick={() => setShowDeleteRequestsPanel(false)} />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-sm shadow-2xl z-[70] max-h-[85vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+              <div>
+                <h3 className="text-xl font-bold text-charcoal">Deletion Requests</h3>
+                <p className="text-sm text-gray-500 mt-0.5">Review and approve or deny lead deletion requests from the sales team</p>
+              </div>
+              <button onClick={() => setShowDeleteRequestsPanel(false)} className="p-2 hover:bg-gray-100 rounded-sm">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="overflow-y-auto flex-1 p-6">
+              {deleteRequests.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle2 className="w-6 h-6 text-green-600" />
+                  </div>
+                  <p className="text-gray-500 font-medium">No pending deletion requests</p>
+                  <p className="text-sm text-gray-400 mt-1">All requests have been reviewed</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {deleteRequests.map((req) => (
+                    <div key={req.id} className="border border-gray-200 rounded-sm p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-semibold text-charcoal truncate">{req.lead?.hotelName ?? 'Unknown Hotel'}</p>
+                            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded uppercase font-medium flex-shrink-0">
+                              {req.lead?.status}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-500 mb-1">Contact: {req.lead?.contactName}</p>
+                          <p className="text-sm text-gray-500 mb-1">
+                            Requested by <span className="font-medium text-charcoal">{req.requestedBy}</span>
+                            {' · '}{new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </p>
+                          {req.reason && (
+                            <p className="text-sm text-gray-600 bg-gray-50 rounded px-3 py-2 mt-2 italic">
+                              "{req.reason}"
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex gap-2 flex-shrink-0">
+                          <button
+                            onClick={() => handleDeleteRequestAction(req.id, 'deny', req.lead?.hotelName)}
+                            className="px-3 py-1.5 border border-gray-300 text-gray-700 text-sm rounded-sm font-medium hover:bg-gray-50 transition-colors"
+                          >
+                            Deny
+                          </button>
+                          <button
+                            onClick={() => handleDeleteRequestAction(req.id, 'approve', req.lead?.hotelName)}
+                            className="px-3 py-1.5 bg-red-600 text-white text-sm rounded-sm font-medium hover:bg-red-700 transition-colors"
+                          >
+                            Approve & Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </>

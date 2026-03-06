@@ -61,8 +61,23 @@ model Lead {
   activities     Activity[]
   notes          Note[]
   calendarEvents CalendarEvent[]
+  deleteRequests LeadDeleteRequest[]
 
   @@map("leads")
+}
+
+model LeadDeleteRequest {
+  id          Int      @id @default(autoincrement())
+  leadId      Int
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  requestedBy String
+  reason      String?
+  status      String   @default("pending")
+  reviewedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("lead_delete_requests")
 }
 
 model Activity {
