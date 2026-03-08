@@ -34,7 +34,7 @@ export default function AdminLayout({ children }) {
     <ProtectedRoute requiredUserType="admin">
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar items={adminNavItems} title="Super Admin" />
-        <div className="flex-1 ml-64">
+        <div className="flex-1 ml-64 min-w-0 overflow-x-hidden">
           <div className="p-8">{children}</div>
         </div>
       </div>
