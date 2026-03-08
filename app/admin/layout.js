@@ -4,16 +4,26 @@ import Sidebar from '@/components/shared/Sidebar';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
 const adminNavItems = [
-  { href: '/admin',          label: 'Dashboard',      icon: 'LayoutDashboard' },
+  { href: '/admin',          label: 'Dashboard', icon: 'LayoutDashboard' },
+  {
+    label: 'CRM', icon: 'Users',
+    children: [
+      { href: '/admin/crm',   label: 'CRM',      icon: 'Users' },
+      { href: '/admin/email', label: 'My Email', icon: 'Mail' },
+    ],
+  },
+  { href: '/admin/calendar', label: 'Calendar', icon: 'CalendarDays' },
+  {
+    label: 'Campaigns', icon: 'Megaphone',
+    children: [
+      { href: '/admin/campaigns', label: 'Campaigns',        icon: 'Megaphone' },
+      { href: '/admin/inbox',     label: 'Campaigns Inbox',  icon: 'Inbox' },
+    ],
+  },
+  { divider: true },
   { href: '/admin/users',    label: 'Hotel Accounts', icon: 'Building2' },
   { href: '/admin/billing',  label: 'Billing',        icon: 'CreditCard' },
   { href: '/admin/sales',    label: 'Sales',          icon: 'TrendingUp' },
-  { href: '/admin/campaigns',label: 'Campaigns',      icon: 'Megaphone' },
-  { href: '/admin/email',    label: 'Email Hub',      icon: 'Mail' },
-  { href: '/admin/inbox',    label: 'Master Inbox',   icon: 'Inbox' },
-  { href: '/admin/crm',      label: 'CRM',            icon: 'Users' },
-  { href: '/admin/calendar', label: 'Calendar',       icon: 'CalendarDays' },
-  { href: '/admin/hotels',   label: 'Hotels',         icon: 'Hotel' },
   { href: '/admin/blogs',    label: 'Blogs',          icon: 'BookOpen' },
   { href: '/admin/support',  label: 'Support',        icon: 'HeadphonesIcon' },
   { href: '/admin/settings', label: 'Settings',       icon: 'Settings' },
