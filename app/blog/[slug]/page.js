@@ -133,13 +133,10 @@ export default function BlogPostPage() {
               )}
 
               {/* Article Content */}
-              <div className="text-charcoal/80 leading-relaxed">
-                {post.content.split('\n\n').map((paragraph, index) => (
-                  <p key={index} className="mb-6">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
+              <div
+                className="text-charcoal/80 leading-relaxed prose prose-lg max-w-none prose-headings:text-charcoal prose-a:text-copper"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
             </div>
 
             {/* Share Section */}
