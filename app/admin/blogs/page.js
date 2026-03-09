@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BookOpen, Plus, Edit2, Trash2, Eye, EyeOff, Search, Calendar, User, Clock, Loader2 } from 'lucide-react';
 import { useNotification } from '@/contexts/NotificationContext';
+import RichTextEditor from '@/components/shared/RichTextEditor';
 
 const CATEGORIES = ['Technology', 'Best Practices', 'Business', 'Industry Trends', 'Implementation', 'Case Studies'];
 const EMPTY_FORM = { title: '', excerpt: '', content: '', author: '', category: 'Technology', readTime: '', slug: '', image: '', published: true };
@@ -22,7 +23,7 @@ function PostForm({ data, onChange }) {
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
-        <textarea value={data.content} onChange={(e) => onChange({ ...data, content: e.target.value })} rows={8} className={INPUT_CLS} placeholder="Full blog post content" />
+        <RichTextEditor value={data.content} onChange={(html) => onChange({ ...data, content: html })} />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
