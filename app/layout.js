@@ -17,11 +17,20 @@ export const metadata = {
     siteName: 'RoomService AI',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/heroimg.png',
+        width: 1536,
+        height: 1024,
+        alt: 'RoomService AI — Autonomous Room Service for Hotels',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'RoomService AI | Autonomous Room Service & Guest Ordering',
     description: 'Autonomous room-service ordering for hotels. Capture every call, reduce errors, prevent chargebacks, and turn in-room dining into a reliable revenue stream — without adding staff.',
+    images: ['/heroimg.png'],
   },
 }
 
