@@ -19,9 +19,9 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/heroimg.png',
-        width: 1536,
-        height: 1024,
+        url: '/hero_roomservice.jpg',
+        width: 864,
+        height: 1184,
         alt: 'RoomService AI — Autonomous Room Service for Hotels',
       },
     ],
@@ -30,7 +30,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'RoomService AI | Autonomous Room Service & Guest Ordering',
     description: 'Autonomous room-service ordering for hotels. Capture every call, reduce errors, prevent chargebacks, and turn in-room dining into a reliable revenue stream — without adding staff.',
-    images: ['/heroimg.png'],
+    images: ['/hero_roomservice.jpg'],
   },
 }
 
